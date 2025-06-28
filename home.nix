@@ -9,12 +9,6 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  # Gnome extensions.
-  programs.gnome-shell.extensions = with pkgs.gnomeExtensions; [
-    { package = rounded-window-corners-reborn; }
-    { package = smile-complementary-extension; }
-  ];
-
   # Install some packages.
   programs.git.enable = true;
   programs.firefox.enable = true;
@@ -32,7 +26,6 @@
   home.packages = with pkgs; [
     adwsteamgtk
     ansible
-    bitwarden-desktop
     discord
     feishin0_16_0.feishin
     filezilla
@@ -49,5 +42,7 @@
     signal-desktop
     smile
     yubioath-flutter
+    gnomeExtensions.rounded-window-corners-reborn
+    gnomeExtensions.smile-complementary-extension
   ];
 }
