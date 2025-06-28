@@ -21,7 +21,7 @@
   
   programs.ghostty = { 
     enable = true; 
-    theme = "GruvboxDarkHard";
+    settings.theme = "GruvboxDarkHard";
   };
   
   programs.vscode = {
