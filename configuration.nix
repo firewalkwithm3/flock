@@ -121,10 +121,11 @@
     };
   };
 
+  # Use ghostty for the "open in terminal" option in file manager.
   programs.nautilus-open-any-terminal = { 
     enable = true; 
     terminal = "ghostty";
-  }; # Use ghostty as "open in terminal" option in file manager.
+  };
 
   # Run electron apps under wayland.
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -132,6 +133,9 @@
   # Gaming packages.
   programs.gamemode.enable = true;
   programs.steam.enable = true;
+
+  # Allow avahi hostname resolution.
+  services.avahi.nssmdns4 = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
