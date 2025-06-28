@@ -38,7 +38,12 @@
     nixd # nix language server
     nixfmt-rfc-style # nix language formatter
     obsidian
-    prismlauncher
+    (prismlauncher.override {
+      # Change Java runtimes available to Prism Launcher
+      jdks = [
+        temurin-jre-bin
+      ];
+    })
     signal-desktop
     smile
     yubioath-flutter
