@@ -38,7 +38,6 @@
     nixfmt-rfc-style # nix language formatter
     obsidian
     prismlauncher
-    protonmail-desktop
     signal-desktop
     smile
     yubioath-flutter
