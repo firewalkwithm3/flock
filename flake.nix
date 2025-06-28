@@ -35,6 +35,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
             home-manager.users.fern = ./home.nix;
 
             home-manager.extraSpecialArgs = {
