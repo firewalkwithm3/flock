@@ -46,6 +46,9 @@
   # Enable firmware updates.
   services.fwupd.enable = true;
 
+  # Enable smart card support (for YubiKey).
+  services.pcscd.enable = true;
+
   # Define hostname.
   networking.hostName = "muskduck";
 
