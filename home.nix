@@ -26,6 +26,7 @@
   home.packages = with pkgs; [
     adwsteamgtk
     ansible
+    celluloid
     discord
     feishin0_16_0.feishin
     filezilla
