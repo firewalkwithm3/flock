@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, fluffychat2, feishin0_16_0, ... }:
 
 {
   # Home manager options.
@@ -31,6 +31,7 @@
 
   home.packages = with pkgs; [
     adwsteamgtk
+    ansible
     bitwarden-desktop
     discord
     feishin0_16_0.feishin
