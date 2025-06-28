@@ -1,15 +1,10 @@
 {
   pkgs,
   lib,
-  fluffychat2,
-  feishin0_16_0,
   ...
 }:
 
 {
-  # Include the results of the hardware scan.
-  imports = [ ./hardware-configuration.nix ];
-
   # NixOS version.
   system.stateVersion = "25.05";
 
@@ -107,7 +102,7 @@
     enable = true;
 
     excludePackages = with pkgs; [
-      xterm
+      xterm # Don't install xterm.
     ];
 
     displayManager.gdm.enable = true;
@@ -123,8 +118,17 @@
     };
   };
 
+  programs.nautilus-open-any-terminal = { 
+    enable = true; 
+    terminal = "ghostty";
+  }; # Use ghostty as "open in terminal" option in file manager.
+
   # Run electron apps under wayland.
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+  # Gaming packages.
+  programs.gamemode.enable = true;
+  programs.steam.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -143,36 +147,4 @@
   services.power-profiles-daemon.enable = lib.mkForce false; # enabled by gnome
   services.tlp.enable = lib.mkForce false; # enabled by nixos-hardware
   services.auto-cpufreq.enable = true;
-
-  # Install some packages
-  programs.git.enable = true;
-  programs.firefox.enable = true;
-  programs.gamemode.enable = true;
-  programs.nautilus-open-any-terminal = { enable = true; terminal = "ghostty"; };
-  programs.steam.enable = true;
-
-  environment.systemPackages = with pkgs; [
-    adwsteamgtk
-    bitwarden-desktop
-    discord
-    feishin0_16_0.feishin
-    filezilla
-    fluffychat2.fluffychat
-    ghostty
-    gimp3
-    glabels-qt
-    gnomeExtensions.rounded-window-corners-reborn
-    gnomeExtensions.smile-complementary-extension
-    jellyfin-media-player
-    libreoffice
-    nixd # nix language server
-    nixfmt-rfc-style # nix language formatter
-    obsidian
-    prismlauncher
-    protonmail-desktop
-    signal-desktop
-    smile
-    vscodium
-    yubioath-flutter
-  ];
 }
