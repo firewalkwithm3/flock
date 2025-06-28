@@ -121,6 +121,21 @@
     };
   };
 
+  # Exclude some default gnome applications.
+  environment.gnome.excludePackages = (with pkgs; [
+    epiphany
+    gnome-connections
+    gnome-console
+    gnome-maps
+    gnome-music
+    gnome-tour
+    totem
+    yelp
+  ]);
+
+  # Remove NixOS HTML manual
+  documentation.doc.enable = false;
+
   # Use ghostty for the "open in terminal" option in file manager.
   programs.nautilus-open-any-terminal = { 
     enable = true; 
