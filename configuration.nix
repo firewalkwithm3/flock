@@ -1,6 +1,8 @@
 {
   pkgs,
   lib,
+  feishin0_16_0,
+  fluffychat2,
   ...
 }:
 
@@ -128,34 +130,81 @@
   };
 
   # Exclude some default gnome applications.
-  environment.gnome.excludePackages = (with pkgs; [
-    epiphany
-    gnome-connections
-    gnome-console
-    gnome-maps
-    gnome-music
-    gnome-tour
-    totem
-    yelp
-  ]);
+  environment.gnome.excludePackages = (
+    with pkgs;
+    [
+      epiphany
+      gnome-connections
+      gnome-console
+      gnome-maps
+      gnome-music
+      gnome-tour
+      totem
+      yelp
+    ]
+  );
 
   # Remove NixOS HTML manual
   documentation.doc.enable = false;
 
   # Use ghostty for the "open in terminal" option in file manager.
-  programs.nautilus-open-any-terminal = { 
-    enable = true; 
+  programs.nautilus-open-any-terminal = {
+    enable = true;
     terminal = "ghostty";
   };
 
   # Run electron apps under wayland.
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
-  # Gaming packages.
-  programs.gamemode.enable = true;
+  # Install some packages.
   programs.steam.enable = true;
+  programs.git.enable = true;
+  programs.firefox.enable = true;
 
-  # Allow avahi hostname resolution.
+  environment.systemPackages = with pkgs; [
+    adwsteamgtk
+    ansible
+    celluloid
+    discord
+    feishin0_16_0.feishin
+    
+    # FluffyChat 2.0.0 with fixed desktop item.
+    (fluffychat2.fluffychat.overrideAttrs (finalAttrs: previousAttrs: {
+      desktopItems = [
+        ((builtins.elemAt previousAttrs.desktopItems 0).override { startupWMClass = "fluffychat"; })
+      ];
+    }))
+
+    gimp3
+    glabels-qt
+    jellyfin-media-player
+    libreoffice
+    nixd # nix language server
+    nixfmt-rfc-style # nix language formatter
+    obsidian
+
+    # PrismLauncher with temurin jre.
+    (prismlauncher.override {
+      jdks = [
+        temurin-jre-bin
+      ];
+    })
+
+    signal-desktop
+    smile
+    yubioath-flutter
+    gnomeExtensions.rounded-window-corners-reborn
+    gnomeExtensions.smile-complementary-extension
+    gnomeExtensions.auto-move-windows
+    gnome-tweaks
+    vscodium
+    ghostty
+  ];
+
+  # Enable gamemode service
+  programs.gamemode.enable = true;
+
+  # Enable avahi hostname resolution.
   services.avahi.nssmdns4 = true;
 
   # Enable CUPS to print documents.
