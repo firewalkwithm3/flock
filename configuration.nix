@@ -57,7 +57,7 @@
   # Enable networking.
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
+  # Set time zone.
   time.timeZone = "Australia/Perth";
 
   # Select internationalisation properties.
@@ -89,17 +89,6 @@
       "networkmanager"
       "wheel"
     ];
-  };
-
-  # Use fish shell.
-  programs.bash = {
-    interactiveShellInit = ''
-      if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
-      then
-        shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
-        exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
-      fi
-    '';
   };
 
   # Enable the GNOME Desktop Environment.
@@ -161,20 +150,30 @@
   programs.git.enable = true;
   programs.firefox.enable = true;
 
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true; # Use neovim as default terminal editor.
+    configure = {
+      customRC = ''
+        set expandtab
+        set shiftwidth=2
+        set tabstop=8
+        set softtabstop=2
+        set number
+        colorscheme kanagawa-dragon
+      '';
+      packages.myVimPackage = with pkgs.vimPlugins; {
+        start = [ kanagawa-nvim ];
+      };
+    };
+  };
+
   environment.systemPackages = with pkgs; [
     adwsteamgtk
     ansible
     celluloid
     discord
     feishin0_16_0.feishin
-    
-    # FluffyChat 2.0.0 with fixed desktop item.
-    (fluffychat2.fluffychat.overrideAttrs (finalAttrs: previousAttrs: {
-      desktopItems = [
-        ((builtins.elemAt previousAttrs.desktopItems 0).override { startupWMClass = "fluffychat"; })
-      ];
-    }))
-
     gimp3
     glabels-qt
     jellyfin-media-player
@@ -182,14 +181,6 @@
     nixd # nix language server
     nixfmt-rfc-style # nix language formatter
     obsidian
-
-    # PrismLauncher with temurin jre.
-    (prismlauncher.override {
-      jdks = [
-        temurin-jre-bin
-      ];
-    })
-
     signal-desktop
     smile
     yubioath-flutter
@@ -199,6 +190,22 @@
     gnome-tweaks
     vscodium
     ghostty
+
+    # PrismLauncher with temurin jre.
+    (prismlauncher.override {
+      jdks = [
+        temurin-jre-bin
+      ];
+    })
+
+    # FluffyChat 2.0.0 with fixed desktop item.
+    (fluffychat2.fluffychat.overrideAttrs (
+      finalAttrs: previousAttrs: {
+        desktopItems = [
+          ((builtins.elemAt previousAttrs.desktopItems 0).override { startupWMClass = "fluffychat"; })
+        ];
+      }
+    ))
   ];
 
   # Enable gamemode service
