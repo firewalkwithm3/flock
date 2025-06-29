@@ -181,6 +181,7 @@
     nixd # nix language server
     nixfmt-rfc-style # nix language formatter
     obsidian
+    protonmail-desktop
     signal-desktop
     smile
     yubioath-flutter
