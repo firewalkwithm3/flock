@@ -121,6 +121,12 @@
     };
   };
 
+  # Theme QT applications
+  qt = {
+    enable = true;
+    style = "adwaita-dark";
+  };
+
   # Exclude some default gnome applications.
   environment.gnome.excludePackages = (with pkgs; [
     epiphany
