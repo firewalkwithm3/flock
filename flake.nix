@@ -31,18 +31,24 @@
         };
 
         modules = [
+          { networking.hostName = "muskduck"; }
+
           lanzaboote.nixosModules.lanzaboote
           nixos-hardware.nixosModules.lenovo-thinkpad-t480
 
+          ./configuration/common.nix
           ./configuration/desktop.nix
           ./hardware-configuration/muskduck.nix # Include the results of the hardware scan.
         ];
       };
 
-      nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.vm-minecraft = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
 
         modules = [
+          { networking.hostName = "minecraft"; }
+          
+          ./configuration/common.nix
           ./configuration/vm.nix
           ./hardware-configuration/vm.nix # Include the results of the hardware scan.
         ];
