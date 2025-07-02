@@ -34,8 +34,17 @@
           lanzaboote.nixosModules.lanzaboote
           nixos-hardware.nixosModules.lenovo-thinkpad-t480
 
-          ./configuration.nix
+          ./configuration/desktop.nix
           ./hardware-configuration/muskduck.nix # Include the results of the hardware scan.
+        ];
+      };
+
+      nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+
+        modules = [
+          ./configuration/vm.nix
+          ./hardware-configuration/vm.nix # Include the results of the hardware scan.
         ];
       };
     };
