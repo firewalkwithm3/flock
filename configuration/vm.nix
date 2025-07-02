@@ -21,6 +21,12 @@
     ];
   };
 
+  # Auto login
+  services.getty.autologinUser = "docker";
+
+  # Passwordless sudo
+  security.sudo.wheelNeedsPassword = false;
+
   # Enable SSH server
   services.openssh.enable = true;
 
