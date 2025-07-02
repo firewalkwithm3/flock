@@ -8,6 +8,7 @@
   # Define a user account.
   users.users.docker = {
     isNormalUser = true;
+    linger = true;
     extraGroups = [
       "wheel"
       "docker"
