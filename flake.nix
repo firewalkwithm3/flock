@@ -50,7 +50,7 @@
           
           ./configuration/common.nix
           ./configuration/vm.nix
-          ./hardware-configuration/vm.nix # Include the results of the hardware scan.
+          ./hardware-configuration/vm-minecraft.nix # Include the results of the hardware scan.
         ];
       };
     };
