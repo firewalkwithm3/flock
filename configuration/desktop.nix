@@ -55,6 +55,9 @@
     ];
   };
 
+  # Encrypt user's home with fscrypt
+  security.pam.enableFscrypt = true;
+
   # Enable the GNOME Desktop Environment.
   services.xserver = {
     enable = true;
