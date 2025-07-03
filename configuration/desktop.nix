@@ -18,6 +18,7 @@
     lanzaboote = {
       enable = true;
       pkiBundle = "/var/lib/sbctl";
+      settings.timeout = 0;
     };
 
     # Enable quiet boot with splash
