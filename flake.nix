@@ -53,5 +53,24 @@
           ./hardware-configuration/vm-minecraft.nix # Include the results of the hardware scan.
         ];
       };
+      
+      nixosConfigurations.lxc-technitium = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+
+        modules = [
+          (nixpkgs + "/nixos/modules/virtualisation/proxmox-lxc.nix")
+
+          { 
+            networking.hostName = "technitium";
+
+            services.technitium-dns-server = {
+              enable = true;
+              openFirewall = true;
+            };
+
+            system.stateVersion = "25.05";
+          }
+        ];
+      };
     };
 }
