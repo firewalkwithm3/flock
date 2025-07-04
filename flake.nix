@@ -71,47 +71,18 @@
 
         modules = [
           (nixpkgs + "/nixos/modules/virtualisation/proxmox-lxc.nix")
-
-          {
-            networking.hostName = "technitium";
-
-            services.technitium-dns-server = {
-              enable = true;
-              openFirewall = true;
-            };
-
-            system.stateVersion = "25.05";
-          }
+          { networking.hostName = "technitium"; }
+          ./configuration/containers/technitium.nix
         ];
       };
 
-      nixosConfigurations.lxc-firefox-syncserver = nixpkgs.lib.nixosSystem rec {
+      nixosConfigurations.lxc-firefox-syncserver = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
 
         modules = [
           (nixpkgs + "/nixos/modules/virtualisation/proxmox-lxc.nix")
-
-          {
-            networking.hostName = "firefox-syncserver";
-
-            services.mysql.package = nixpkgs.legacyPackages.${system}.mariadb;
-
-            services.firefox-syncserver = {
-              enable = true;
-              secrets = ./firefox-syncserver.env;
-              settings.host = "0.0.0.0";
-              singleNode = {
-                enable = true;
-                hostname = "0.0.0.0";
-                url = "https://fxsync.fern.garden";
-                capacity = 1;
-              };
-            };
-
-            networking.firewall.allowedTCPPorts = [ 5000 ];
-
-            system.stateVersion = "25.05";
-          }
+          { networking.hostName = "firefox-syncserver"; }
+          ./configuration/containers/firefox-syncserver.nix
         ];
       };
     };
