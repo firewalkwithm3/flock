@@ -5,7 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05"; # Stable nixpkgs.
     lanzaboote.url = "github:nix-community/lanzaboote"; # Secure boot.
     nixos-hardware.url = "github:NixOS/nixos-hardware"; # Hardware specific config.
-    
+
     # Updated packages.
     fluffychat2.url = "github:NixOS/nixpkgs?ref=pull/419632/head"; # FluffyChat 2.0.0
     feishin0_16_0.url = "github:NixOS/nixpkgs?ref=pull/414929/head"; # Feishin 0.16.0
@@ -47,20 +47,20 @@
 
         modules = [
           { networking.hostName = "minecraft"; }
-          
+
           ./configuration/common.nix
           ./configuration/vm.nix
           ./hardware-configuration/vm-minecraft.nix # Include the results of the hardware scan.
         ];
       };
-      
+
       nixosConfigurations.lxc-technitium = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
 
         modules = [
           (nixpkgs + "/nixos/modules/virtualisation/proxmox-lxc.nix")
 
-          { 
+          {
             networking.hostName = "technitium";
 
             services.technitium-dns-server = {
@@ -79,7 +79,7 @@
         modules = [
           (nixpkgs + "/nixos/modules/virtualisation/proxmox-lxc.nix")
 
-          { 
+          {
             networking.hostName = "firefox-syncserver";
 
             services.mysql.package = nixpkgs.legacyPackages.${system}.mariadb;

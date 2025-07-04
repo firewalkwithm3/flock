@@ -11,7 +11,7 @@
 
   # Allow unfree packages.
   nixpkgs.config.allowUnfree = true;
-  
+
   # Set time zone.
   time.timeZone = "Australia/Perth";
 
