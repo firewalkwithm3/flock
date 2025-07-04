@@ -11,22 +11,17 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/4d1a9488-acf2-456c-a435-cc96ecff8aba";
+    { device = "/dev/disk/by-uuid/cbd70e61-fcdc-4b1f-af03-d3da8a2866ea";
       fsType = "ext4";
     };
 
   fileSystems."/home/docker/volumes" =
-    { device = "/dev/disk/by-uuid/e520aca6-6cad-483c-b855-f6409a8a6908";
-      fsType = "ext2";
-    };
-
-  fileSystems."/var/lib/docker" =
-    { device = "/dev/disk/by-uuid/fab223a4-78a1-4900-81a6-45d04325fdcf";
-      fsType = "ext2";
+    { device = "/dev/disk/by-uuid/3730e48a-8784-4c49-8692-473c9b4bc8c3";
+      fsType = "ext4";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/73916996-b863-4279-9fe5-ae2b3b773608"; }
+    [ { device = "/dev/disk/by-uuid/3123f58e-63a9-44fa-ac29-3e79dc520b8f"; }
     ];
 
   networking.useDHCP = lib.mkDefault true;
