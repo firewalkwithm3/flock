@@ -4,6 +4,9 @@
     enable = true;
     device = "/dev/sda";
   };
+  
+  # Enable QEMU guest agent
+  services.qemuGuest.enable = true;
 
   # Define a user account.
   users.users.docker = {
