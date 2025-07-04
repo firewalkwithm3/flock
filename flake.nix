@@ -54,6 +54,18 @@
         ];
       };
 
+      nixosConfigurations.vm-docker = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+
+        modules = [
+          { networking.hostName = "docker"; }
+
+          ./configuration/common.nix
+          ./configuration/vm.nix
+          ./hardware-configuration/vm-docker.nix # Include the results of the hardware scan.
+        ];
+      };
+
       nixosConfigurations.lxc-technitium = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
 
