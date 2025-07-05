@@ -8,7 +8,7 @@
 
     # Updated packages.
     fluffychat2.url = "github:NixOS/nixpkgs?ref=pull/419632/head"; # FluffyChat 2.0.0
-    feishin0_16_0.url = "github:NixOS/nixpkgs?ref=pull/414929/head"; # Feishin 0.16.0
+    feishin0_17.url = "github:NixOS/nixpkgs?ref=pull/414929/head"; # Feishin 0.17.0
   };
 
   outputs =
@@ -18,7 +18,7 @@
       lanzaboote,
       nixos-hardware,
       fluffychat2,
-      feishin0_16_0,
+      feishin0_17,
       ...
     }:
     {
@@ -27,7 +27,7 @@
 
         specialArgs = {
           fluffychat2 = import fluffychat2 { inherit system; };
-          feishin0_16_0 = import feishin0_16_0 { inherit system; };
+          feishin0_17 = import feishin0_17 { inherit system; };
         };
 
         modules = [

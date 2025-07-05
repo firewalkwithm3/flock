@@ -1,7 +1,7 @@
 {
   pkgs,
   lib,
-  feishin0_16_0,
+  feishin0_17,
   fluffychat2,
   ...
 }:
@@ -122,7 +122,7 @@
     ansible
     celluloid
     discord
-    feishin0_16_0.feishin
+    feishin0_17.feishin
     ghostty
     gimp3
     glabels-qt
