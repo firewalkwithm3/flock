@@ -164,6 +164,9 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
+  # If you don't set this Wireguard won't work.
+  networking.firewall.checkReversePath = false;
+
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
