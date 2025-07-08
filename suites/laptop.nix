@@ -107,6 +107,7 @@ with lib;
   environment.systemPackages = with pkgs; [
     adwsteamgtk
     ansible
+    caligula
     celluloid
     discord
     feishin0_17.feishin
