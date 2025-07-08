@@ -1,0 +1,9 @@
+keys:
+  - &admin_fern age1n9q3cspp4a6qvjv9xaf00e5d5za3d8upz4akj2fh6zt5ly3ahans3vpx5x
+  - &server_firefox-syncserver age1hrvts2jkdclk3f9atjry7chuakt5n9qmlwfwsdlcnmc88ld3ysuqz6ejge
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - *admin_fern
+      - *server_firefox-syncserver

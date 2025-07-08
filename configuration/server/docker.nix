@@ -1,13 +1,4 @@
 {
-  # Configure the bootloader.
-  boot.loader.grub = {
-    enable = true;
-    device = "/dev/sda";
-  };
-  
-  # Enable QEMU guest agent
-  services.qemuGuest.enable = true;
-
   # Define a user account.
   users.users.docker = {
     isNormalUser = true;
@@ -27,17 +18,6 @@
   # Auto login
   services.getty.autologinUser = "docker";
 
-  # Passwordless sudo
-  security.sudo.wheelNeedsPassword = false;
-
-  # Enable all terminfo (for ghostty)
-  environment.enableAllTerminfo = true;
-
-  # Enable SSH server
-  services.openssh.enable = true;
-
   # Enable docker
-  virtualisation.docker = {
-    enable = true;
-  };
+  virtualisation.docker.enable = true;
 }
