@@ -7,7 +7,7 @@
     secrets."firefox_syncserver/sync_master_secret" = {};
   };
 
-  # syncserver-rs service.
+  # Enable Firefox sync service.
   services.mysql.package = pkgs.mariadb;
 
   services.firefox-syncserver = {
@@ -22,5 +22,6 @@
     };
   };
 
+  # Open Firefox sync service port.
   networking.firewall.allowedTCPPorts = [ 5000 ];
 }

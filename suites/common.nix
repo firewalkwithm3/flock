@@ -1,4 +1,10 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  user,
+  ...
+}:
+with lib;
 {
   # NixOS version.
   system.stateVersion = "25.05";
@@ -11,6 +17,9 @@
 
   # Allow unfree packages.
   nixpkgs.config.allowUnfree = true;
+
+  # Enable redistributable firmware.
+  hardware.enableRedistributableFirmware = true;
 
   # Set time zone.
   time.timeZone = "Australia/Perth";
@@ -34,6 +43,19 @@
   services.xserver.xkb = {
     layout = "us";
     variant = "";
+  };
+
+  # Enable networking.
+  networking.networkmanager.enable = true;
+
+  # Define a user account.
+  users.users.${user} = {
+    isNormalUser = true;
+    description = mkIf (user == "fern") "Fern Garden";
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+    ];
   };
 
   # Use fish shell

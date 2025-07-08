@@ -5,14 +5,14 @@
   fluffychat2,
   ...
 }:
-
+with lib;
 {
   # Configure the bootloader.
   boot = {
     # Enable secure boot.
     bootspec.enable = true;
     initrd.systemd.enable = true;
-    loader.systemd-boot.enable = lib.mkForce false;
+    loader.systemd-boot.enable = mkForce false;
     loader.efi.canTouchEfiVariables = true;
 
     lanzaboote = {
@@ -42,19 +42,6 @@
 
   # Enable smart card support (for YubiKey).
   services.pcscd.enable = true;
-
-  # Enable networking.
-  networking.networkmanager.enable = true;
-
-  # Define a user account.
-  users.users.fern = {
-    isNormalUser = true;
-    description = "Fern Garden";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-    ];
-  };
 
   # Encrypt user's home with fscrypt
   security.pam.enableFscrypt = true;
@@ -178,7 +165,7 @@
   };
 
   # Enable CPU frequency scaling management.
-  services.power-profiles-daemon.enable = lib.mkForce false; # enabled by gnome
+  services.power-profiles-daemon.enable = mkForce false; # enabled by gnome
   services.tlp.enable = lib.mkForce false; # enabled by nixos-hardware
   services.auto-cpufreq.enable = true;
 }

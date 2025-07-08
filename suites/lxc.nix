@@ -1,8 +1,10 @@
-{ modulesPath, ... }:
 {
-  # Import Proxmox LXC configuration.
+  modulesPath,
+  ...
+}:
+{
   imports = [
     (modulesPath + "/virtualisation/proxmox-lxc.nix")
+    ./server.nix
   ];
 }
-

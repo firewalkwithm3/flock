@@ -1,8 +1,13 @@
-{ lib, modulesPath, ... }:
 {
-  # Import qemu guest configuration.
+  modulesPath,
+  lib,
+  ...
+}:
+with lib;
+{
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
+    ./server.nix
   ];
 
   # Load kernel modules.
@@ -17,7 +22,7 @@
   boot.kernelModules = [ "kvm-intel" ];
 
   # Enable DHCP.
-  networking.useDHCP = lib.mkDefault true;
+  networking.useDHCP = mkDefault true;
 
   # Configure the bootloader.
   boot.loader.grub = {
