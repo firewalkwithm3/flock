@@ -119,6 +119,8 @@ with lib;
     gnomeExtensions.smile-complementary-extension
     jellyfin-media-player
     libreoffice
+    merriweather
+    merriweather-sans
     nixd # nix language server
     nixfmt-rfc-style # nix language formatter
     nerd-fonts.fira-code
@@ -151,6 +153,7 @@ with lib;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  services.printing.drivers = [ pkgs.brlaser ];
 
   # If you don't set this Wireguard won't work.
   networking.firewall.checkReversePath = false;
