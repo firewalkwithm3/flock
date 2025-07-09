@@ -15,7 +15,7 @@
         "type": "github"
       }
     },
-    "feishin0_17": {
+    "feishin-0_17_0": {
       "locked": {
         "lastModified": 1751534869,
         "narHash": "sha256-kUYk/jPyX5Lnhv7vUUfNVSHUDA8k28xi2H5bt6a1EHg=",
@@ -68,7 +68,7 @@
         "type": "github"
       }
     },
-    "fluffychat2": {
+    "fluffychat-2_0_0": {
       "locked": {
         "lastModified": 1751127166,
         "narHash": "sha256-dX9VUpl3YM9XexkU+QGj1UfptYy/jIOeB3tSMtJSRgE=",
@@ -162,11 +162,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1751582995,
-        "narHash": "sha256-u7ubvtxdTnFPpV27AHpgoKn7qHuE7sgWgza/1oj5nzA=",
+        "lastModified": 1751741127,
+        "narHash": "sha256-t75Shs76NgxjZSgvvZZ9qOmz5zuBE8buUaYD28BMTxg=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "7a732ed41ca0dd64b4b71b563ab9805a80a7d693",
+        "rev": "29e290002bfff26af1db6f64d070698019460302",
         "type": "github"
       },
       "original": {
@@ -188,22 +188,6 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_4": {
-      "locked": {
-        "lastModified": 1751741127,
-        "narHash": "sha256-t75Shs76NgxjZSgvvZZ9qOmz5zuBE8buUaYD28BMTxg=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "29e290002bfff26af1db6f64d070698019460302",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-25.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -236,14 +220,13 @@
     },
     "root": {
       "inputs": {
-        "feishin0_17": "feishin0_17",
-        "fluffychat2": "fluffychat2",
+        "feishin-0_17_0": "feishin-0_17_0",
+        "fluffychat-2_0_0": "fluffychat-2_0_0",
         "lanzaboote": "lanzaboote",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "secrets": "secrets",
-        "sops-nix": "sops-nix",
-        "webone": "webone"
+        "sops-nix": "sops-nix"
       }
     },
     "rust-overlay": {
@@ -299,24 +282,6 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
-        "type": "github"
-      }
-    },
-    "webone": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_4"
-      },
-      "locked": {
-        "lastModified": 1752031448,
-        "narHash": "sha256-5cWr89OO+rt0saYETbLOIsKG0XYQqlgZ33xUMeQ1a1M=",
-        "owner": "firewalkwithm3",
-        "repo": "webone",
-        "rev": "04cbb02463e52fd917944ee3f7174218d6fa42a5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "firewalkwithm3",
-        "repo": "webone",
         "type": "github"
       }
     }

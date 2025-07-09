@@ -13,9 +13,8 @@
     };
 
     # Packages.
-    fluffychat2.url = "github:NixOS/nixpkgs?ref=pull/419632/head"; # FluffyChat 2.0.0
-    feishin0_17.url = "github:NixOS/nixpkgs?ref=pull/414929/head"; # Feishin 0.17.0
-    webone.url = "github:firewalkwithm3/webone"; # WebOne HTTP proxy.
+    fluffychat-2_0_0.url = "github:NixOS/nixpkgs?ref=pull/419632/head"; # FluffyChat 2.0.0
+    feishin-0_17_0.url = "github:NixOS/nixpkgs?ref=pull/414929/head"; # Feishin 0.17.0
   };
 
   outputs =
@@ -25,9 +24,8 @@
       lanzaboote,
       nixos-hardware,
       sops-nix,
-      fluffychat2,
-      feishin0_17,
-      webone,
+      fluffychat-2_0_0,
+      feishin-0_17_0,
       ...
     }:
     with nixpkgs.lib;
@@ -43,6 +41,17 @@
         nixosSystem rec {
           system = platform;
 
+          pkgs = import nixpkgs {
+            inherit system;
+            config = {
+              allowUnfree = true;
+              permittedInsecurePackages = [
+                "dotnet-sdk-6.0.428"
+                "dotnet-runtime-6.0.36"
+              ];
+            };
+          };
+
           specialArgs = {
             inherit
               hostname
@@ -52,9 +61,9 @@
               ; # Inherit variables.
 
             userPackages = {
-              fluffychat = fluffychat2.legacyPackages.${system}.fluffychat;
-              feishin = feishin0_17.legacyPackages.${system}.feishin;
-              webone = webone.packages.${system}.default;
+              fluffychat = fluffychat-2_0_0.legacyPackages.${system}.fluffychat;
+              feishin = feishin-0_17_0.legacyPackages.${system}.feishin;
+              webone = pkgs.callPackage ./packages/webone { };
             };
 
             secrets = builtins.toString inputs.secrets; # Secrets directory.
