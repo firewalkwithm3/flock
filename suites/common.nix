@@ -16,9 +16,6 @@ with lib;
     "flakes"
   ];
 
-  # Allow unfree packages.
-  nixpkgs.config.allowUnfree = true;
-
   # Enable redistributable firmware.
   hardware.enableRedistributableFirmware = true;
 
