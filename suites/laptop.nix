@@ -122,7 +122,7 @@ with lib;
     merriweather
     merriweather-sans
     nixd # nix language server
-    nixfmt-rfc-style # nix language formatter
+    alejandra # nix language formatter
     nerd-fonts.fira-code
     obsidian
     protonmail-desktop
