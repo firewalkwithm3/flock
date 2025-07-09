@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  hostname,
   user,
   ...
 }:
@@ -47,6 +48,9 @@ with lib;
 
   # Enable networking.
   networking.networkmanager.enable = true;
+
+  # Set hostname
+  networking.hostName = hostname;
 
   # Define a user account.
   users.users.${user} = {
