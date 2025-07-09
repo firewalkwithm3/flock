@@ -122,6 +122,7 @@ with lib;
     libreoffice
     nixd # nix language server
     nixfmt-rfc-style # nix language formatter
+    nerd-fonts.fira-code
     obsidian
     protonmail-desktop
     signal-desktop
