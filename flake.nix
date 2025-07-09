@@ -12,9 +12,10 @@
       flake = false;
     };
     
-    # Updated packages.
+    # Packages.
     fluffychat2.url = "github:NixOS/nixpkgs?ref=pull/419632/head"; # FluffyChat 2.0.0
     feishin0_17.url = "github:NixOS/nixpkgs?ref=pull/414929/head"; # Feishin 0.17.0
+    webone.url = "github:firewalkwithm3/webone?rev=256f5e115ceffb71fd2d61e0c7cb9b6b55c7571a"; # WebOne HTTP proxy.
   };
 
   outputs =
@@ -34,7 +35,7 @@
         {
           hostname,
           suite,
-          platform,
+          platform ? "x86_64-linux",
           user ? "fern",
           extraModules ? [ ],
         }:
@@ -42,17 +43,20 @@
           system = platform;
 
           specialArgs = {
-            inherit user;
-            secrets = builtins.toString inputs.secrets;
-            fluffychat2 = import fluffychat2 { inherit system; };
-            feishin0_17 = import feishin0_17 { inherit system; };
+            inherit hostname suite platform user; # Inherit variables.
+            secrets = builtins.toString inputs.secrets; # Secrets directory.
+            # Packages
+            userPkgs = {
+              fluffychat = fluffychat2.legacyPackages.${system}.fluffychat;
+              feishin = feishin0_17.legacyPackages.${system}.feishin;
+              webone = webone.packages.${system}.default;
+            };
           };
 
           modules = [
             ./suites/common.nix
             ./suites/${suite}.nix
             ./hosts/${suite}/${hostname}.nix
-            { networking.hostName = hostname; }
           ] ++ extraModules;
         };
     in
@@ -62,7 +66,6 @@
         muskduck = mkHost {
           hostname = "muskduck";
           suite = "laptop";
-          platform = "x86_64-linux";
           extraModules = [
             lanzaboote.nixosModules.lanzaboote
             nixos-hardware.nixosModules.lenovo-thinkpad-t480
@@ -85,27 +88,23 @@
           hostname = "docker";
           suite = "vm";
           user = "docker";
-          platform = "x86_64-linux";
         };
 
         vm-minecraft = mkHost {
           hostname = "minecraft";
           suite = "vm";
           user = "docker";
-          platform = "x86_64-linux";
         };
 
         # LXC containers.
         lxc-technitium = mkHost {
           hostname = "technitium";
           suite = "lxc";
-          platform = "x86_64-linux";
         };
 
         lxc-firefox-syncserver = mkHost {
           hostname = "firefox-syncserver";
           suite = "lxc";
-          platform = "x86_64-linux";
           extraModules = [
             sops-nix.nixosModules.sops
           ];
