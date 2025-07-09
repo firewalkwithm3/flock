@@ -98,20 +98,42 @@ with lib;
   # Install some packages.
   programs.git.enable = true;
 
-  programs.neovim = {
+  programs.nvf = {
     enable = true;
-    defaultEditor = true; # Use neovim as default terminal editor.
-    configure = {
-      customRC = ''
-        set expandtab
-        set shiftwidth=2
-        set tabstop=8
-        set softtabstop=2
-        set number
-        colorscheme kanagawa-dragon
-      '';
-      packages.myVimPackage = with pkgs.vimPlugins; {
-        start = [ kanagawa-nvim ];
+    defaultEditor = true;
+
+    settings.vim = {
+      autocomplete.blink-cmp.enable = true;
+      undoFile.enable = true;
+      lineNumberMode = "number";
+
+      options = rec {
+        shiftwidth = 2;
+        tabstop = shiftwidth;
+        softtabstop = shiftwidth;
+        expandtab = true;
+      };
+
+      languages.nix = {
+        enable = true;
+        treesitter.enable = true;
+        lsp = {
+          enable = true;
+          server = "nixd";
+        };
+        format = {
+          enable = true;
+          type = "alejandra";
+        };
+      };
+      
+      extraPlugins = {
+        kanagawa-nvim = {
+          package = pkgs.vimPlugins.kanagawa-nvim;
+          setup = ''
+            require("kanagawa").load("dragon")
+          '';
+        };
       };
     };
   };

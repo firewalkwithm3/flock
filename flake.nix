@@ -11,6 +11,7 @@
       url = "git+ssh://git@docker.local:222/fern/secrets?ref=main";
       flake = false;
     };
+    nvf.url = "github:notashelf/nvf"; # Neovim.
 
     # Packages.
     fluffychat-2_0_0.url = "github:NixOS/nixpkgs?ref=pull/419632/head"; # FluffyChat 2.0.0
@@ -24,6 +25,7 @@
       lanzaboote,
       nixos-hardware,
       sops-nix,
+      nvf,
       fluffychat-2_0_0,
       feishin-0_17_0,
       ...
@@ -71,6 +73,7 @@
 
           modules =
             [
+              nvf.nixosModules.default
               ./suites/common.nix
               ./suites/${suite}.nix
               ./hosts/${suite}/${hostname}.nix
