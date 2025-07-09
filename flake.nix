@@ -11,11 +11,11 @@
       url = "git+ssh://git@docker.local:222/fern/secrets?ref=main";
       flake = false;
     };
-    
+
     # Packages.
     fluffychat2.url = "github:NixOS/nixpkgs?ref=pull/419632/head"; # FluffyChat 2.0.0
     feishin0_17.url = "github:NixOS/nixpkgs?ref=pull/414929/head"; # Feishin 0.17.0
-    webone.url = "github:firewalkwithm3/webone?rev=256f5e115ceffb71fd2d61e0c7cb9b6b55c7571a"; # WebOne HTTP proxy.
+    webone.url = "github:firewalkwithm3/webone"; # WebOne HTTP proxy.
   };
 
   outputs =
@@ -27,11 +27,12 @@
       sops-nix,
       fluffychat2,
       feishin0_17,
+      webone,
       ...
     }:
+    with nixpkgs.lib;
     let
       mkHost =
-        with nixpkgs.lib;
         {
           hostname,
           suite,
@@ -43,21 +44,30 @@
           system = platform;
 
           specialArgs = {
-            inherit hostname suite platform user; # Inherit variables.
-            secrets = builtins.toString inputs.secrets; # Secrets directory.
-            # Packages
-            userPkgs = {
+            inherit
+              hostname
+              suite
+              platform
+              user
+              ; # Inherit variables.
+
+            userPackages = {
               fluffychat = fluffychat2.legacyPackages.${system}.fluffychat;
               feishin = feishin0_17.legacyPackages.${system}.feishin;
               webone = webone.packages.${system}.default;
             };
+
+            secrets = builtins.toString inputs.secrets; # Secrets directory.
           };
 
-          modules = [
-            ./suites/common.nix
-            ./suites/${suite}.nix
-            ./hosts/${suite}/${hostname}.nix
-          ] ++ extraModules;
+          modules =
+            [
+              ./suites/common.nix
+              ./suites/${suite}.nix
+              ./hosts/${suite}/${hostname}.nix
+            ]
+            ++ (filesystem.listFilesRecursive ./modules)
+            ++ extraModules;
         };
     in
     {

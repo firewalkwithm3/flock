@@ -1,6 +1,6 @@
 {
   pkgs,
-  userPkgs,
+  userPackages,
   lib,
   ...
 }:
@@ -109,7 +109,7 @@ with lib;
     caligula
     celluloid
     discord
-    userPkgs.feishin
+    userPackages.feishin
     ghostty
     gimp3
     glabels-qt
@@ -137,7 +137,7 @@ with lib;
     })
 
     # FluffyChat 2.0.0 with fixed desktop item.
-    (userPkgs.fluffychat.overrideAttrs (
+    (userPackages.fluffychat.overrideAttrs (
       finalAttrs: previousAttrs: {
         desktopItems = [
           ((builtins.elemAt previousAttrs.desktopItems 0).override { startupWMClass = "fluffychat"; })

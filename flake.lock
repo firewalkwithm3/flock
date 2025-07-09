@@ -307,17 +307,16 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1752022159,
-        "narHash": "sha256-WFkQ1WA+BRLuwfmh6uMym3IoUSXOu2sSM5XzalsLeUQ=",
+        "lastModified": 1752031448,
+        "narHash": "sha256-5cWr89OO+rt0saYETbLOIsKG0XYQqlgZ33xUMeQ1a1M=",
         "owner": "firewalkwithm3",
         "repo": "webone",
-        "rev": "256f5e115ceffb71fd2d61e0c7cb9b6b55c7571a",
+        "rev": "04cbb02463e52fd917944ee3f7174218d6fa42a5",
         "type": "github"
       },
       "original": {
         "owner": "firewalkwithm3",
         "repo": "webone",
-        "rev": "256f5e115ceffb71fd2d61e0c7cb9b6b55c7571a",
         "type": "github"
       }
     }
