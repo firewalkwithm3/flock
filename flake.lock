@@ -192,6 +192,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_4": {
+      "locked": {
+        "lastModified": 1751741127,
+        "narHash": "sha256-t75Shs76NgxjZSgvvZZ9qOmz5zuBE8buUaYD28BMTxg=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "29e290002bfff26af1db6f64d070698019460302",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-25.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "pre-commit-hooks-nix": {
       "inputs": {
         "flake-compat": [
@@ -226,7 +242,8 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "secrets": "secrets",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "webone": "webone"
       }
     },
     "rust-overlay": {
@@ -282,6 +299,25 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
+        "type": "github"
+      }
+    },
+    "webone": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_4"
+      },
+      "locked": {
+        "lastModified": 1752022159,
+        "narHash": "sha256-WFkQ1WA+BRLuwfmh6uMym3IoUSXOu2sSM5XzalsLeUQ=",
+        "owner": "firewalkwithm3",
+        "repo": "webone",
+        "rev": "256f5e115ceffb71fd2d61e0c7cb9b6b55c7571a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "firewalkwithm3",
+        "repo": "webone",
+        "rev": "256f5e115ceffb71fd2d61e0c7cb9b6b55c7571a",
         "type": "github"
       }
     }
