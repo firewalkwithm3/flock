@@ -1,5 +1,5 @@
 {
-  self,
+  nixpkgs,
   pkgs,
   lib,
   hostname,
@@ -10,14 +10,14 @@ with lib; {
   # NixOS version.
   system.stateVersion = "25.05";
 
-  # Set $NIX_PATH to flake input.
-  nix.nixPath = ["nixpkgs=${self.inputs.nixpkgs}"];
-
   # Enable flakes.
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
   ];
+
+  # Set $NIX_PATH to flake input.
+  nix.nixPath = ["nixpkgs=${nixpkgs}"];
 
   # Enable redistributable firmware.
   hardware.enableRedistributableFirmware = true;
@@ -66,25 +66,14 @@ with lib; {
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
-      # nnn cd on quit.
-      function n --wraps nnn --description 'support nnn quit and change directory'
-          if test -n "$NNNLVL" -a "$NNNLVL" -ge 1
-              echo "nnn is already running"
-              return
-          end
-
-          if test -n "$XDG_CONFIG_HOME"
-              set -x NNN_TMPFILE "$XDG_CONFIG_HOME/nnn/.lastd"
-          else
-              set -x NNN_TMPFILE "$HOME/.config/nnn/.lastd"
-          end
-
-          command ${pkgs.nnn}/bin/nnn $argv
-
-          if test -e $NNN_TMPFILE
-              source $NNN_TMPFILE
-              rm -- $NNN_TMPFILE
-          end
+      # yazi cd on quit.
+      function y
+        set tmp (mktemp -t "yazi-cwd.XXXXXX")
+        ${pkgs.yazi}/bin/yazi $argv --cwd-file="$tmp"
+        if read -z cwd < "$tmp"; and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
+          builtin cd -- "$cwd"
+        end
+        rm -f -- "$tmp"
       end
 
       # kanagawa theme.
@@ -123,6 +112,7 @@ with lib; {
     '';
   };
 
+  # https://nixos.wiki/wiki/Fish#Setting_fish_as_your_shell
   programs.bash = {
     interactiveShellInit = ''
       if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
@@ -131,136 +121,153 @@ with lib; {
         exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
       fi
     '';
-  }; # https://nixos.wiki/wiki/Fish#Setting_fish_as_your_shell
+  };
 
   # Install some packages.
-  programs.git.enable = true;
-  programs.lazygit.enable = true;
+  programs = {
+    git.enable = true;
+    lazygit.enable = true;
 
-  programs.nixvim = {
-    enable = true;
-
-    globals.mapleader = " ";
-
-    keymaps = [
-      {
-        key = "<Leader>t";
-        action = "<cmd> ToggleTerm direction=float <CR>";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "Open floating terminal.";
-        };
-      }
-
-      {
-        key = "<Leader>e";
-        action = "<cmd> Neotree toggle <CR>";
-        mode = "n";
-        options.desc = "Show/hide file browser.";
-      }
-
-      {
-        key = "<Leader>f";
-        action = "<cmd> Telescope fd <CR>";
-        mode = "n";
-        options.desc = "Find files.";
-      }
-
-      {
-        key = "<Leader>g";
-        action = "<cmd> LazyGit <CR>";
-        mode = "n";
-        options.desc = "Open LazyGit.";
-      }
-    ];
-
-    colorschemes.kanagawa = {
+    nixvim = {
       enable = true;
-      settings = {
-        background.dark = "dragon";
-        colors.theme.all.ui.bg_gutter = "none";
-        overrides = ''
-          function(colors)
-            local theme = colors.theme
-            return {
-              NormalFloat = { bg = "none" },
-              FloatBorder = { bg = "none" },
-              FloatTitle = { bg = "none" },
 
-              TelescopeTitle = { fg = theme.ui.special, bold = true },
-              TelescopePromptNormal = { bg = theme.ui.bg_p1 },
-              TelescopePromptBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
-              TelescopeResultsNormal = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m1 },
-              TelescopeResultsBorder = { fg = theme.ui.bg_m1, bg = theme.ui.bg_m1 },
-              TelescopePreviewNormal = { bg = theme.ui.bg_dim },
-              TelescopePreviewBorder = { bg = theme.ui.bg_dim, fg = theme.ui.bg_dim },
+      globals.mapleader = " ";
 
-              Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1 },  -- add `blend = vim.o.pumblend` to enable transparency
-              PmenuSel = { fg = "NONE", bg = theme.ui.bg_p2 },
-              PmenuSbar = { bg = theme.ui.bg_m1 },
-              PmenuThumb = { bg = theme.ui.bg_p2 },
-            }
-          end,
-        '';
-      };
-    };
+      keymaps = [
+        {
+          key = "<Leader>t";
+          action = "<cmd> ToggleTerm direction=float <CR>";
+          mode = "n";
+          options = {
+            silent = true;
+            desc = "Open floating terminal.";
+          };
+        }
 
-    opts = rec {
-      shiftwidth = 2;
-      tabstop = shiftwidth;
-      softtabstop = shiftwidth;
-      expandtab = true;
-      number = true;
-      cursorline = true;
-      undofile = true;
-      clipboard = "unnamedplus";
-    };
+        {
+          key = "<Leader>g";
+          action = "<cmd> LazyGit <CR>";
+          mode = "n";
+          options.desc = "Open LazyGit.";
+        }
 
-    clipboard.providers.wl-copy.enable = true;
+        {
+          key = "<Leader>y";
+          action = "<cmd> Yazi toggle <CR>";
+          mode = "n";
+          options.desc = "Show/hide file browser.";
+        }
 
-    plugins = {
-      colorizer.enable = true;
-      gitsigns.enable = true;
-      lazygit.enable = true;
-      lsp-format.enable = true;
-      mini-statusline.enable = true;
-      mini-tabline.enable = true;
-      notify.enable = true;
-      nvim-autopairs.enable = true;
-      telescope.enable = true;
-      toggleterm.enable = true;
-      trouble.enable = true;
-      web-devicons.enable = true;
-      which-key.enable = true;
+        {
+          key = "<Leader>ff";
+          action = "<cmd> Telescope fd <CR>";
+          mode = "n";
+          options.desc = "Find files.";
+        }
 
-      blink-cmp = {
+        {
+          key = "<Leader>fb";
+          action = "<cmd> Telescope buffers <CR>";
+          mode = "n";
+          options.desc = "Switch between buffers with telescope.";
+        }
+
+        {
+          key = "<Leader>fg";
+          action = "<cmd> Telescope live_grep <CR>";
+          mode = "n";
+          options.desc = "Grep files.";
+        }
+      ];
+
+      colorschemes.kanagawa = {
         enable = true;
         settings = {
-          keymap.preset = "enter";
-          menu.auto_show = true;
-          completion.documentation.auto_show = true;
+          background.dark = "dragon";
+          colors.theme.all.ui.bg_gutter = "none";
+          overrides = ''
+            function(colors)
+              local theme = colors.theme
+              return {
+                NormalFloat = { bg = "none" },
+                FloatBorder = { bg = "none" },
+                FloatTitle = { bg = "none" },
+
+                TelescopeTitle = { fg = theme.ui.special, bold = true },
+                TelescopePromptNormal = { bg = theme.ui.bg_p1 },
+                TelescopePromptBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
+                TelescopeResultsNormal = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m1 },
+                TelescopeResultsBorder = { fg = theme.ui.bg_m1, bg = theme.ui.bg_m1 },
+                TelescopePreviewNormal = { bg = theme.ui.bg_dim },
+                TelescopePreviewBorder = { bg = theme.ui.bg_dim, fg = theme.ui.bg_dim },
+
+                Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1 },  -- add `blend = vim.o.pumblend` to enable transparency
+                PmenuSel = { fg = "NONE", bg = theme.ui.bg_p2 },
+                PmenuSbar = { bg = theme.ui.bg_m1 },
+                PmenuThumb = { bg = theme.ui.bg_p2 },
+              }
+            end,
+          '';
         };
       };
 
-      lsp = {
-        enable = true;
-        inlayHints = true;
-        servers = {
-          nixd = {
-            enable = true;
-            settings.formatting.command = ["alejandra"];
-            settings.options.nixos.expr = "(builtins.getFlake (builtins.toString /home/fern/Repositories/flock)).nixosConfigurations.muskduck.options";
+      opts = rec {
+        shiftwidth = 2;
+        tabstop = shiftwidth;
+        softtabstop = shiftwidth;
+        expandtab = true;
+        number = true;
+        cursorline = true;
+        undofile = true;
+        clipboard = "unnamedplus";
+      };
+
+      clipboard.providers.wl-copy.enable = true;
+
+      plugins = {
+        colorizer.enable = true;
+        gitsigns.enable = true;
+        lazygit.enable = true;
+        lsp-format.enable = true;
+        mini-statusline.enable = true;
+        mini-tabline.enable = true;
+        notify.enable = true;
+        nvim-autopairs.enable = true;
+        telescope.enable = true;
+        toggleterm.enable = true;
+        trouble.enable = true;
+        web-devicons.enable = true;
+        which-key.enable = true;
+        yazi.enable = true;
+
+        blink-cmp = {
+          enable = true;
+          settings = {
+            keymap.preset = "enter";
+            menu.auto_show = true;
+            completion.documentation.auto_show = true;
           };
         };
-      };
 
-      treesitter = {
-        enable = true;
-        settings = {
-          highlight.enable = true;
-          incremental_selection.enable = true;
-          indent.enable = true;
+        lsp = {
+          enable = true;
+          inlayHints = true;
+          servers = {
+            nixd = {
+              enable = true;
+              settings.formatting.command = ["alejandra"];
+              settings.options.nixos.expr = "(builtins.getFlake (builtins.toString /home/fern/Repositories/flock)).nixosConfigurations.muskduck.options";
+            };
+          };
+        };
+
+        treesitter = {
+          enable = true;
+          settings = {
+            highlight.enable = true;
+            incremental_selection.enable = true;
+            indent.enable = true;
+          };
         };
       };
     };
@@ -271,10 +278,10 @@ with lib; {
     btop
     lynx
     ncdu
-    nnn
     rsync
     tmux
     trash-cli
+    yazi
   ];
 
   # Enable avahi hostname resolution.

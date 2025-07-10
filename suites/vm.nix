@@ -3,8 +3,7 @@
   lib,
   ...
 }:
-with lib;
-{
+with lib; {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ./server.nix
@@ -19,7 +18,7 @@ with lib;
     "sd_mod"
   ];
 
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = ["kvm-intel"];
 
   # Enable DHCP.
   networking.useDHCP = mkDefault true;

@@ -1,8 +1,12 @@
-{ config, pkgs, secrets, ... }:
 {
+  config,
+  pkgs,
+  secrets,
+  ...
+}: {
   # Secrets.
   sops = {
-    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
     defaultSopsFile = "${secrets}/sops.yaml";
     secrets."firefox_syncserver/sync_master_secret" = {};
   };
@@ -23,5 +27,5 @@
   };
 
   # Open Firefox sync service port.
-  networking.firewall.allowedTCPPorts = [ 5000 ];
+  networking.firewall.allowedTCPPorts = [5000];
 }

@@ -4,8 +4,7 @@
   lib,
   ...
 }:
-with lib;
-{
+with lib; {
   # Configure the bootloader.
   boot = {
     # Enable secure boot.
@@ -58,7 +57,7 @@ with lib;
     desktopManager.gnome = {
       enable = true;
       # Enable fractional scaling.
-      extraGSettingsOverridePackages = [ pkgs.mutter ];
+      extraGSettingsOverridePackages = [pkgs.mutter];
       extraGSettingsOverrides = ''
         [org.gnome.mutter]
         experimental-features=['scale-monitor-framebuffer']
@@ -74,34 +73,29 @@ with lib;
 
   # Exclude some default gnome applications.
   environment.gnome.excludePackages = (
-    with pkgs;
-    [
-      epiphany
-      gnome-connections
-      gnome-console
-      gnome-maps
-      gnome-music
-      gnome-tour
-      totem
-      yelp
+    with pkgs; [
+      epiphany # Browser (replaced by Firefox).
+      gnome-connections # Remote desktop viewer.
+      gnome-console # Terminal (replaced by ghostTTY).
+      gnome-maps # Maps viewer.
+      gnome-music # Music player.
+      gnome-tour # First-boot tour.
+      totem # Movie player (replaced by Celluloid).
+      yelp # Help viewer.
     ]
   );
 
   # Remove NixOS HTML manual
   documentation.doc.enable = false;
 
-  # Use ghostty for the "open in terminal" option in file manager.
-  programs.nautilus-open-any-terminal = {
-    enable = true;
-    terminal = "ghostty";
-  };
-
   # Run electron apps under wayland.
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   # Install some packages.
-  programs.steam.enable = true;
-  programs.firefox.enable = true;
+  programs = {
+    steam.enable = true;
+    firefox.enable = true;
+  };
 
   environment.systemPackages = with pkgs; [
     adwsteamgtk
@@ -109,7 +103,6 @@ with lib;
     caligula
     celluloid
     discord
-    userPackages.feishin
     ghostty
     gimp3
     glabels-qt
@@ -121,14 +114,12 @@ with lib;
     libreoffice
     merriweather
     merriweather-sans
-    nixd # nix language server
-    alejandra # nix language formatter
     nerd-fonts.fira-code
     obsidian
     protonmail-desktop
     signal-desktop
     smile
-    vscodium
+    userPackages.feishin
     yubioath-flutter
 
     # PrismLauncher with temurin jre.
@@ -142,18 +133,20 @@ with lib;
     (userPackages.fluffychat.overrideAttrs (
       finalAttrs: previousAttrs: {
         desktopItems = [
-          ((builtins.elemAt previousAttrs.desktopItems 0).override { startupWMClass = "fluffychat"; })
+          ((builtins.elemAt previousAttrs.desktopItems 0).override {startupWMClass = "fluffychat";})
         ];
       }
     ))
   ];
 
-  # Enable gamemode service
+  # Enable gamemode service.
   programs.gamemode.enable = true;
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
-  services.printing.drivers = [ pkgs.brlaser ];
+  services.printing = {
+    enable = true;
+    drivers = [pkgs.brlaser];
+  };
 
   # If you don't set this Wireguard won't work.
   networking.firewall.checkReversePath = false;
@@ -170,6 +163,6 @@ with lib;
 
   # Enable CPU frequency scaling management.
   services.power-profiles-daemon.enable = mkForce false; # enabled by gnome
-  services.tlp.enable = lib.mkForce false; # enabled by nixos-hardware
+  services.tlp.enable = mkForce false; # enabled by nixos-hardware
   services.auto-cpufreq.enable = true;
 }

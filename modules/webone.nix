@@ -4,15 +4,13 @@
   userPackages,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.services.webone;
-in
-{
+in {
   options.services.webone.enable = mkEnableOption "Enable WebOne HTTP proxy.";
 
   config = mkIf cfg.enable {
-    users.groups.webone = { };
+    users.groups.webone = {};
 
     users.users.webone = {
       createHome = true;
@@ -42,10 +40,10 @@ in
 
     systemd.services.webone = {
       description = "WebOne HTTP Proxy Server";
-      documentation = [ "https://github.com/atauenis/webone/wiki/" ];
-      requires = [ "network-online.target" ];
-      after = [ "network-online.target" ];
-      wantedBy = [ "default.target" ];
+      documentation = ["https://github.com/atauenis/webone/wiki/"];
+      requires = ["network-online.target"];
+      after = ["network-online.target"];
+      wantedBy = ["default.target"];
       startLimitIntervalSec = 5;
       startLimitBurst = 3;
       environment = {

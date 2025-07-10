@@ -1,13 +1,16 @@
-{ user, lib, ... }:
-with lib;
 {
-  # Passwordless sudo
+  user,
+  lib,
+  ...
+}:
+with lib; {
+  # Passwordless sudo.
   security.sudo.wheelNeedsPassword = false;
 
-  # Enable all terminfo (for ghostty)
+  # Enable all terminfo (for ghostty).
   environment.enableAllTerminfo = true;
 
-  # Enable SSH server
+  # Enable SSH server.
   services.openssh.enable = true;
 
   users.users.${user} = {
@@ -17,7 +20,7 @@ with lib;
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBEJYq1fMxVOzCMfE/td6DtWS8nUk76U9seYD3Z9RYAz u0_a399@fairywren"
       "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIMoJvPcUJDVVzO4dHROCFNlgJdDZSP5xyPx2s40zcx5QAAAABHNzaDo= YubiKey5NFC"
     ];
-    extraGroups = mkIf (user == "docker") [ "docker" ];
+    extraGroups = mkIf (user == "docker") ["docker"];
   };
 
   # Enable docker.

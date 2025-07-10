@@ -6,12 +6,13 @@
     lanzaboote.url = "github:nix-community/lanzaboote"; # Secure boot.
     nixos-hardware.url = "github:NixOS/nixos-hardware"; # Hardware specific config.
     sops-nix.url = "github:Mic92/sops-nix"; # Secrets management.
+    nixvim.url = "github:nix-community/nixvim"; # Neovim.
+
     # Secrets repo.
     secrets = {
       url = "git+ssh://git@docker.local:222/fern/secrets?ref=main";
       flake = false;
     };
-    nixvim.url = "github:nix-community/nixvim"; # Neovim.
 
     # Packages.
     fluffychat-2_0_0.url = "github:NixOS/nixpkgs?ref=pull/419632/head"; # FluffyChat 2.0.0
@@ -19,12 +20,11 @@
   };
 
   outputs = inputs @ {
-    self,
     nixpkgs,
     lanzaboote,
     nixos-hardware,
-    sops-nix,
     nixvim,
+    sops-nix,
     fluffychat-2_0_0,
     feishin-0_17_0,
     ...
@@ -53,7 +53,7 @@
 
           specialArgs = {
             inherit
-              self
+              nixpkgs
               hostname
               suite
               platform
