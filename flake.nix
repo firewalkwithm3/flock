@@ -11,35 +11,32 @@
       url = "git+ssh://git@docker.local:222/fern/secrets?ref=main";
       flake = false;
     };
-    nvf.url = "github:notashelf/nvf"; # Neovim.
+    nixvim.url = "github:nix-community/nixvim"; # Neovim.
 
     # Packages.
     fluffychat-2_0_0.url = "github:NixOS/nixpkgs?ref=pull/419632/head"; # FluffyChat 2.0.0
     feishin-0_17_0.url = "github:NixOS/nixpkgs?ref=pull/414929/head"; # Feishin 0.17.0
   };
 
-  outputs =
-    inputs@{
-      self,
-      nixpkgs,
-      lanzaboote,
-      nixos-hardware,
-      sops-nix,
-      nvf,
-      fluffychat-2_0_0,
-      feishin-0_17_0,
-      ...
-    }:
-    with nixpkgs.lib;
-    let
-      mkHost =
-        {
-          hostname,
-          suite,
-          platform ? "x86_64-linux",
-          user ? "fern",
-          extraModules ? [ ],
-        }:
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    lanzaboote,
+    nixos-hardware,
+    sops-nix,
+    nixvim,
+    fluffychat-2_0_0,
+    feishin-0_17_0,
+    ...
+  }:
+    with nixpkgs.lib; let
+      mkHost = {
+        hostname,
+        suite,
+        platform ? "x86_64-linux",
+        user ? "fern",
+        extraModules ? [],
+      }:
         nixosSystem rec {
           system = platform;
 
@@ -56,6 +53,7 @@
 
           specialArgs = {
             inherit
+              self
               hostname
               suite
               platform
@@ -65,7 +63,7 @@
             userPackages = {
               fluffychat = fluffychat-2_0_0.legacyPackages.${system}.fluffychat;
               feishin = feishin-0_17_0.legacyPackages.${system}.feishin;
-              webone = pkgs.callPackage ./packages/webone { };
+              webone = pkgs.callPackage ./packages/webone {};
             };
 
             secrets = builtins.toString inputs.secrets; # Secrets directory.
@@ -73,7 +71,7 @@
 
           modules =
             [
-              nvf.nixosModules.default
+              nixvim.nixosModules.nixvim
               ./suites/common.nix
               ./suites/${suite}.nix
               ./hosts/${suite}/${hostname}.nix
@@ -81,8 +79,7 @@
             ++ (filesystem.listFilesRecursive ./modules)
             ++ extraModules;
         };
-    in
-    {
+    in {
       nixosConfigurations = {
         # Laptops.
         muskduck = mkHost {

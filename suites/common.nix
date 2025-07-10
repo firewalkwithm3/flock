@@ -1,14 +1,17 @@
 {
+  self,
   pkgs,
   lib,
   hostname,
   user,
   ...
 }:
-with lib;
-{
+with lib; {
   # NixOS version.
   system.stateVersion = "25.05";
+
+  # Set $NIX_PATH to flake input.
+  nix.nixPath = ["nixpkgs=${self.inputs.nixpkgs}"];
 
   # Enable flakes.
   nix.settings.experimental-features = [
@@ -97,42 +100,129 @@ with lib;
 
   # Install some packages.
   programs.git.enable = true;
+  programs.lazygit.enable = true;
 
-  programs.nvf = {
+  programs.nixvim = {
     enable = true;
-    defaultEditor = true;
 
-    settings.vim = {
-      autocomplete.blink-cmp.enable = true;
-      undoFile.enable = true;
-      lineNumberMode = "number";
+    globals.mapleader = " ";
 
-      options = rec {
-        shiftwidth = 2;
-        tabstop = shiftwidth;
-        softtabstop = shiftwidth;
-        expandtab = true;
+    keymaps = [
+      {
+        key = "<Leader>t";
+        action = "<cmd> ToggleTerm direction=float <CR>";
+        mode = "n";
+        options = {
+          silent = true;
+          desc = "Open floating terminal.";
+        };
+      }
+
+      {
+        key = "<Leader>e";
+        action = "<cmd> Neotree toggle <CR>";
+        mode = "n";
+        options.desc = "Show/hide file browser.";
+      }
+
+      {
+        key = "<Leader>ff";
+        action = "<cmd> Telescope fd <CR>";
+        mode = "n";
+        options.desc = "Find files.";
+      }
+    ];
+
+    colorschemes.kanagawa = {
+      enable = true;
+      settings = {
+        background.dark = "dragon";
+        colors.theme.all.ui.bg_gutter = "none";
+        overrides = ''
+          function(colors)
+            local theme = colors.theme
+            return {
+              NormalFloat = { bg = "none" },
+              FloatBorder = { bg = "none" },
+              FloatTitle = { bg = "none" },
+
+              TelescopeTitle = { fg = theme.ui.special, bold = true },
+              TelescopePromptNormal = { bg = theme.ui.bg_p1 },
+              TelescopePromptBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
+              TelescopeResultsNormal = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m1 },
+              TelescopeResultsBorder = { fg = theme.ui.bg_m1, bg = theme.ui.bg_m1 },
+              TelescopePreviewNormal = { bg = theme.ui.bg_dim },
+              TelescopePreviewBorder = { bg = theme.ui.bg_dim, fg = theme.ui.bg_dim },
+
+              Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1 },  -- add `blend = vim.o.pumblend` to enable transparency
+              PmenuSel = { fg = "NONE", bg = theme.ui.bg_p2 },
+              PmenuSbar = { bg = theme.ui.bg_m1 },
+              PmenuThumb = { bg = theme.ui.bg_p2 },
+            }
+          end,
+        '';
       };
+    };
 
-      languages.nix = {
+    opts = rec {
+      shiftwidth = 2;
+      tabstop = shiftwidth;
+      softtabstop = shiftwidth;
+      expandtab = true;
+      number = true;
+      cursorline = true;
+      undofile = true;
+      clipboard = "unnamedplus";
+    };
+
+    clipboard.providers.wl-copy.enable = true;
+
+    plugins = {
+      blink-cmp = {
         enable = true;
-        treesitter.enable = true;
-        lsp = {
-          enable = true;
-          server = "nixd";
-        };
-        format = {
-          enable = true;
-          type = "alejandra";
+        settings = {
+          keymap.preset = "enter";
+          menu.auto_show = true;
+          completion.documentation.auto_show = true;
         };
       };
-      
-      extraPlugins = {
-        kanagawa-nvim = {
-          package = pkgs.vimPlugins.kanagawa-nvim;
-          setup = ''
-            require("kanagawa").load("dragon")
-          '';
+
+      bufferline.enable = true;
+      colorizer.enable = true;
+      gitsigns.enable = true;
+      lsp-format.enable = true;
+      neo-tree.enable = true;
+      notify.enable = true;
+      nvim-autopairs.enable = true;
+      telescope.enable = true;
+      trouble.enable = true;
+      toggleterm.enable = true;
+      web-devicons.enable = true;
+      which-key.enable = true;
+
+      lualine = {
+        enable = true;
+        settings.options.theme = "auto";
+      };
+
+      lsp = {
+        enable = true;
+        inlayHints = true;
+        servers = {
+          nixd = {
+            enable = true;
+            settings.formatting.command = ["alejandra"];
+            settings.options.nixos.expr = "(builtins.getFlake (builtins.toString /home/fern/Repositories/flock)).nixosConfigurations.muskduck.options";
+          };
+        };
+      };
+
+      treesitter = {
+        enable = true;
+        settings = {
+          highlight.enable = true;
+          incremental_selection.enable = true;
+          indent.enable = true;
         };
       };
     };
