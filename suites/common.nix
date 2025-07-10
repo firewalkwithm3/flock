@@ -226,6 +226,7 @@ with lib; {
 
       plugins = {
         colorizer.enable = true;
+        comment.enable = true;
         gitsigns.enable = true;
         lazygit.enable = true;
         lsp-format.enable = true;
@@ -255,7 +256,7 @@ with lib; {
           servers = {
             nixd = {
               enable = true;
-              settings.formatting.command = ["alejandra"];
+              settings.formatting.command = ["${pkgs.alejandra}/bin/alejandra"];
               settings.options.nixos.expr = "(builtins.getFlake (builtins.toString /home/fern/Repositories/flock)).nixosConfigurations.muskduck.options";
             };
           };
