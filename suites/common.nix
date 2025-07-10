@@ -161,10 +161,17 @@ with lib; {
       }
 
       {
-        key = "<Leader>ff";
+        key = "<Leader>f";
         action = "<cmd> Telescope fd <CR>";
         mode = "n";
         options.desc = "Find files.";
+      }
+
+      {
+        key = "<Leader>g";
+        action = "<cmd> LazyGit <CR>";
+        mode = "n";
+        options.desc = "Open LazyGit.";
       }
     ];
 
@@ -213,6 +220,20 @@ with lib; {
     clipboard.providers.wl-copy.enable = true;
 
     plugins = {
+      colorizer.enable = true;
+      gitsigns.enable = true;
+      lazygit.enable = true;
+      lsp-format.enable = true;
+      mini-statusline.enable = true;
+      mini-tabline.enable = true;
+      notify.enable = true;
+      nvim-autopairs.enable = true;
+      telescope.enable = true;
+      toggleterm.enable = true;
+      trouble.enable = true;
+      web-devicons.enable = true;
+      which-key.enable = true;
+
       blink-cmp = {
         enable = true;
         settings = {
@@ -220,24 +241,6 @@ with lib; {
           menu.auto_show = true;
           completion.documentation.auto_show = true;
         };
-      };
-
-      bufferline.enable = true;
-      colorizer.enable = true;
-      gitsigns.enable = true;
-      lsp-format.enable = true;
-      neo-tree.enable = true;
-      notify.enable = true;
-      nvim-autopairs.enable = true;
-      telescope.enable = true;
-      trouble.enable = true;
-      toggleterm.enable = true;
-      web-devicons.enable = true;
-      which-key.enable = true;
-
-      lualine = {
-        enable = true;
-        settings.options.theme = "auto";
       };
 
       lsp = {
