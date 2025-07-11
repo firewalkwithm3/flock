@@ -16,6 +16,9 @@ with lib; {
     "flakes"
   ];
 
+  # Add @wheel to trusted-users for remote deployments.
+  nix.settings.trusted-users = ["root" "@wheel"];
+
   # Set $NIX_PATH to flake input.
   nix.nixPath = ["nixpkgs=${nixpkgs}"];
 
@@ -59,6 +62,12 @@ with lib; {
     extraGroups = [
       "wheel"
       "networkmanager"
+    ];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIETPyuxUVEmYyEW6PVC6BXqkhULHd/RvMm8fMbYhjTMV fern@muskduck"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKzW4epTmK01kGVXcuAXUNJQPltnogf4uab9FA5m8S3n fern@pardalote"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBEJYq1fMxVOzCMfE/td6DtWS8nUk76U9seYD3Z9RYAz u0_a399@fairywren"
+      "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIMoJvPcUJDVVzO4dHROCFNlgJdDZSP5xyPx2s40zcx5QAAAABHNzaDo= YubiKey5NFC"
     ];
   };
 
@@ -122,6 +131,9 @@ with lib; {
       fi
     '';
   };
+
+  # https://discourse.nixos.org/t/slow-build-at-building-man-cache/52365/2
+  documentation.man.generateCaches = false;
 
   # Install some packages.
   programs = {
@@ -285,9 +297,17 @@ with lib; {
     yazi
   ];
 
+  # Enable SSH server.
+  services.openssh.enable = true;
+
   # Enable avahi hostname resolution.
   services.avahi = {
     enable = true;
     nssmdns4 = true;
+    publish = {
+      enable = true;
+      addresses = true;
+      domain = true;
+    };
   };
 }
