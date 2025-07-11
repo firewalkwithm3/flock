@@ -28,4 +28,16 @@
 
   # Enable WebOne HTTP proxy.
   services.webone.enable = true;
+
+  # Enable Netatalk AFP fileserver.
+  services.netatalk = {
+    enable = true;
+    settings = {
+      Global."uam list" = "uams_guest.so";
+      iMac = {
+        path = "/srv/iMac";
+        "read-only" = true;
+      };
+    };
+  };
 }
