@@ -66,13 +66,13 @@ with inputs.nixpkgs.lib; {
             nixvim.nixosModules.nixvim
             ./suites/common.nix
             ./suites/${suite}.nix
-            ./hosts/${suite}/${hostname}.nix
+            ./hosts/${hostname}.nix
           ]
           ++ (filesystem.listFilesRecursive ./modules)
           ++ extraModules;
       };
     }
-    // optionalAttrs (suite != "laptop") {
+    // optionalAttrs (suite != "desktop") {
       deploy.nodes.${hostname} = {
         hostname = "${hostname}.local";
         profiles.system = {

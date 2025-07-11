@@ -30,7 +30,7 @@
   in
     mergeHosts [
       (mkHost "muskduck" {
-        suite = "laptop";
+        suite = "desktop";
         extraModules = [
           lanzaboote.nixosModules.lanzaboote
           nixos-hardware.nixosModules.lenovo-thinkpad-t480
