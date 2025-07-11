@@ -19,115 +19,52 @@
     feishin-0_17_0.url = "github:NixOS/nixpkgs?ref=pull/414929/head"; # Feishin 0.17.0
   };
 
-  outputs = inputs @ {
-    nixpkgs,
+  outputs = {
     lanzaboote,
     nixos-hardware,
-    nixvim,
     sops-nix,
-    fluffychat-2_0_0,
-    feishin-0_17_0,
     ...
-  }:
-    with nixpkgs.lib; let
-      mkHost = {
-        hostname,
-        suite,
-        platform ? "x86_64-linux",
-        user ? "fern",
-        extraModules ? [],
-      }:
-        nixosSystem rec {
-          system = platform;
+  } @ inputs: let
+    helpers = import ./helpers.nix inputs;
+    inherit (helpers) mergeHosts mkHost;
+  in
+    mergeHosts [
+      (mkHost "muskduck" {
+        suite = "laptop";
+        extraModules = [
+          lanzaboote.nixosModules.lanzaboote
+          nixos-hardware.nixosModules.lenovo-thinkpad-t480
+        ];
+      })
 
-          pkgs = import nixpkgs {
-            inherit system;
-            config = {
-              allowUnfree = true;
-              permittedInsecurePackages = [
-                "dotnet-sdk-6.0.428"
-                "dotnet-runtime-6.0.36"
-              ];
-            };
-          };
+      (mkHost "weebill" {
+        suite = "server";
+        platform = "aarch64-linux";
+        user = "docker";
+        extraModules = [
+          nixos-hardware.nixosModules.raspberry-pi-4
+        ];
+      })
 
-          specialArgs = {
-            inherit
-              nixpkgs
-              hostname
-              suite
-              platform
-              user
-              ; # Inherit variables.
+      (mkHost "docker" {
+        suite = "vm";
+        user = "docker";
+      })
 
-            userPackages = {
-              fluffychat = fluffychat-2_0_0.legacyPackages.${system}.fluffychat;
-              feishin = feishin-0_17_0.legacyPackages.${system}.feishin;
-              webone = pkgs.callPackage ./packages/webone {};
-            };
+      (mkHost "minecraft" {
+        suite = "vm";
+        user = "docker";
+      })
 
-            secrets = builtins.toString inputs.secrets; # Secrets directory.
-          };
+      (mkHost "technitium" {
+        suite = "lxc";
+      })
 
-          modules =
-            [
-              nixvim.nixosModules.nixvim
-              ./suites/common.nix
-              ./suites/${suite}.nix
-              ./hosts/${suite}/${hostname}.nix
-            ]
-            ++ (filesystem.listFilesRecursive ./modules)
-            ++ extraModules;
-        };
-    in {
-      nixosConfigurations = {
-        # Laptops.
-        muskduck = mkHost {
-          hostname = "muskduck";
-          suite = "laptop";
-          extraModules = [
-            lanzaboote.nixosModules.lanzaboote
-            nixos-hardware.nixosModules.lenovo-thinkpad-t480
-          ];
-        };
-
-        # Servers.
-        weebill = mkHost {
-          hostname = "weebill";
-          suite = "server";
-          platform = "aarch64-linux";
-          user = "docker";
-          extraModules = [
-            nixos-hardware.nixosModules.raspberry-pi-4
-          ];
-        };
-
-        # Virtual machines.
-        vm-docker = mkHost {
-          hostname = "docker";
-          suite = "vm";
-          user = "docker";
-        };
-
-        vm-minecraft = mkHost {
-          hostname = "minecraft";
-          suite = "vm";
-          user = "docker";
-        };
-
-        # LXC containers.
-        lxc-technitium = mkHost {
-          hostname = "technitium";
-          suite = "lxc";
-        };
-
-        lxc-firefox-syncserver = mkHost {
-          hostname = "firefox-syncserver";
-          suite = "lxc";
-          extraModules = [
-            sops-nix.nixosModules.sops
-          ];
-        };
-      };
-    };
+      (mkHost "firefox-syncserver" {
+        suite = "lxc";
+        extraModules = [
+          sops-nix.nixosModules.sops
+        ];
+      })
+    ];
 }
