@@ -63,12 +63,6 @@ with lib; {
       "wheel"
       "networkmanager"
     ];
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIETPyuxUVEmYyEW6PVC6BXqkhULHd/RvMm8fMbYhjTMV fern@muskduck"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKzW4epTmK01kGVXcuAXUNJQPltnogf4uab9FA5m8S3n fern@pardalote"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBEJYq1fMxVOzCMfE/td6DtWS8nUk76U9seYD3Z9RYAz u0_a399@fairywren"
-      "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIMoJvPcUJDVVzO4dHROCFNlgJdDZSP5xyPx2s40zcx5QAAAABHNzaDo= YubiKey5NFC"
-    ];
   };
 
   # Use fish shell
@@ -84,40 +78,6 @@ with lib; {
         end
         rm -f -- "$tmp"
       end
-
-      # kanagawa theme.
-      set -l foreground DCD7BA normal
-      set -l selection 2D4F67 brcyan
-      set -l comment 727169 brblack
-      set -l red C34043 red
-      set -l orange FF9E64 brred
-      set -l yellow C0A36E yellow
-      set -l green 76946A green
-      set -l purple 957FB8 magenta
-      set -l cyan 7AA89F cyan
-      set -l pink D27E99 brmagenta
-
-      # Syntax Highlighting Colors
-      set -g fish_color_normal $foreground
-      set -g fish_color_command $cyan
-      set -g fish_color_keyword $pink
-      set -g fish_color_quote $yellow
-      set -g fish_color_redirection $foreground
-      set -g fish_color_end $orange
-      set -g fish_color_error $red
-      set -g fish_color_param $purple
-      set -g fish_color_comment $comment
-      set -g fish_color_selection --background=$selection
-      set -g fish_color_search_match --background=$selection
-      set -g fish_color_operator $green
-      set -g fish_color_escape $pink
-      set -g fish_color_autosuggestion $comment
-
-      # Completion Pager Colors
-      set -g fish_pager_color_progress $comment
-      set -g fish_pager_color_prefix $cyan
-      set -g fish_pager_color_completion $foreground
-      set -g fish_pager_color_description $comment
     '';
   };
 
@@ -143,84 +103,24 @@ with lib; {
     nixvim = {
       enable = true;
 
+      dependencies.ripgrep.enable = true;
+
       globals.mapleader = " ";
 
       keymaps = [
         {
           key = "<Leader>t";
-          action = "<cmd> ToggleTerm direction=float <CR>";
-          mode = "n";
-          options = {
-            silent = true;
-            desc = "Open floating terminal.";
-          };
+          action = "<cmd> ToggleTerm direction=horizontal <CR>";
         }
-
         {
-          key = "<Leader>g";
-          action = "<cmd> LazyGit <CR>";
-          mode = "n";
-          options.desc = "Open LazyGit.";
-        }
-
-        {
-          key = "<Leader>y";
-          action = "<cmd> Yazi toggle <CR>";
-          mode = "n";
-          options.desc = "Show/hide file browser.";
-        }
-
-        {
-          key = "<Leader>ff";
-          action = "<cmd> Telescope fd <CR>";
-          mode = "n";
-          options.desc = "Find files.";
-        }
-
-        {
-          key = "<Leader>fb";
-          action = "<cmd> Telescope buffers <CR>";
-          mode = "n";
-          options.desc = "Switch between buffers with telescope.";
-        }
-
-        {
-          key = "<Leader>fg";
-          action = "<cmd> Telescope live_grep <CR>";
-          mode = "n";
-          options.desc = "Grep files.";
+          key = "<Leader>x";
+          action = "<cmd> Trouble diagnostics toggle focus=false<CR>";
         }
       ];
 
-      colorschemes.kanagawa = {
+      colorschemes.gruvbox = {
         enable = true;
-        settings = {
-          background.dark = "dragon";
-          colors.theme.all.ui.bg_gutter = "none";
-          overrides = ''
-            function(colors)
-              local theme = colors.theme
-              return {
-                NormalFloat = { bg = "none" },
-                FloatBorder = { bg = "none" },
-                FloatTitle = { bg = "none" },
-
-                TelescopeTitle = { fg = theme.ui.special, bold = true },
-                TelescopePromptNormal = { bg = theme.ui.bg_p1 },
-                TelescopePromptBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
-                TelescopeResultsNormal = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m1 },
-                TelescopeResultsBorder = { fg = theme.ui.bg_m1, bg = theme.ui.bg_m1 },
-                TelescopePreviewNormal = { bg = theme.ui.bg_dim },
-                TelescopePreviewBorder = { bg = theme.ui.bg_dim, fg = theme.ui.bg_dim },
-
-                Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1 },  -- add `blend = vim.o.pumblend` to enable transparency
-                PmenuSel = { fg = "NONE", bg = theme.ui.bg_p2 },
-                PmenuSbar = { bg = theme.ui.bg_m1 },
-                PmenuThumb = { bg = theme.ui.bg_p2 },
-              }
-            end,
-          '';
-        };
+        settings.contrast = "hard";
       };
 
       opts = rec {
@@ -231,34 +131,52 @@ with lib; {
         number = true;
         cursorline = true;
         undofile = true;
-        clipboard = "unnamedplus";
       };
-
-      clipboard.providers.wl-copy.enable = true;
 
       plugins = {
         auto-session.enable = true;
+        bufferline.enable = true;
         colorizer.enable = true;
         comment.enable = true;
         gitsigns.enable = true;
         lazygit.enable = true;
         lsp-format.enable = true;
-        mini-statusline.enable = true;
-        mini-tabline.enable = true;
         notify.enable = true;
         nvim-autopairs.enable = true;
-        telescope.enable = true;
+        nvim-surround.enable = true;
         toggleterm.enable = true;
         trouble.enable = true;
         web-devicons.enable = true;
-        which-key.enable = true;
-        yazi.enable = true;
+
+        lualine = {
+          enable = true;
+          settings.extensions = ["trouble" "toggleterm"];
+        };
+
+        telescope = {
+          enable = true;
+          keymaps = {
+            "<Leader>ff" = "find_files";
+            "<Leader>fg" = "live_grep";
+            "<Leader>fb" = "buffers";
+          };
+        };
 
         blink-cmp = {
           enable = true;
           settings = {
-            keymap.preset = "enter";
-            menu.auto_show = true;
+            keymap = {
+              preset = "enter";
+              "<Tab>" = [
+                "select_next"
+                "fallback"
+              ];
+              "<S-Tab>" = [
+                "select_prev"
+                "fallback"
+              ];
+            };
+            completion.menu.auto_show = true;
             completion.documentation.auto_show = true;
           };
         };
@@ -297,9 +215,6 @@ with lib; {
     trash-cli
     yazi
   ];
-
-  # Enable SSH server.
-  services.openssh.enable = true;
 
   # Enable avahi hostname resolution.
   services.avahi = {
