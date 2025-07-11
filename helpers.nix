@@ -1,6 +1,7 @@
 inputs:
 with inputs;
-with inputs.nixpkgs.lib; {
+with inputs.nixpkgs.lib; let
+in {
   mergeHosts = lists.foldl' (
     a: b: attrsets.recursiveUpdate a b
   ) {};
@@ -52,6 +53,15 @@ with inputs.nixpkgs.lib; {
         ]
         ++ (filesystem.listFilesRecursive ./modules)
         ++ extraModules;
+    };
+
+    deploy.nodes.${hostname} = {
+      hostname = "${hostname}.local";
+      profiles.system = {
+        user = "root";
+        sshUser = user;
+        path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.${hostname};
+      };
     };
   };
 }

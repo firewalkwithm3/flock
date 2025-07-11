@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05"; # Stable nixpkgs.
+    deploy-rs.url = "github:serokell/deploy-rs";
     lanzaboote.url = "github:nix-community/lanzaboote"; # Secure boot.
     nixos-hardware.url = "github:NixOS/nixos-hardware"; # Hardware specific config.
     sops-nix.url = "github:Mic92/sops-nix"; # Secrets management.
@@ -46,10 +47,10 @@
         ];
       })
 
-      (mkHost "docker" {
-        suite = "vm";
-        user = "docker";
-      })
+      # (mkHost "docker" {
+      #   suite = "vm";
+      #   user = "docker";
+      # })
 
       (mkHost "minecraft" {
         suite = "vm";
