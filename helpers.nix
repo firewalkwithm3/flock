@@ -11,37 +11,54 @@ in {
     suite,
     user ? "fern",
     extraModules ? [],
-  }: {
-    nixosConfigurations.${hostname} = nixosSystem rec {
-      system = platform;
+  }: let
+    system = platform;
 
-      pkgs = import nixpkgs {
-        inherit system;
-        config = {
-          allowUnfree = true;
-          permittedInsecurePackages = [
-            "dotnet-sdk-6.0.428"
-            "dotnet-runtime-6.0.36"
-          ];
-        };
+    secrets = builtins.toString inputs.secrets;
+
+    pkgs = import nixpkgs {
+      inherit system;
+      config = {
+        allowUnfree = true;
+        permittedInsecurePackages = [
+          "dotnet-sdk-6.0.428"
+          "dotnet-runtime-6.0.36"
+        ];
       };
+    };
+
+    pkgs-deploy-rs = import nixpkgs {
+      inherit system;
+      overlays = [
+        deploy-rs.overlays.default
+        (self: super: {
+          deploy-rs = {
+            inherit (pkgs) deploy-rs;
+            lib = super.deploy-rs.lib;
+          };
+        })
+      ];
+    };
+
+    userPackages = {
+      fluffychat = (import nixpkgs-pr-fluffychat {inherit system;}).fluffychat;
+      feishin = (import nixpkgs-pr-feishin {inherit system;}).feishin;
+      webone = pkgs.callPackage ./packages/webone {};
+    };
+  in {
+    nixosConfigurations.${hostname} = nixosSystem rec {
+      inherit system pkgs;
 
       specialArgs = {
         inherit
-          hostname
           nixpkgs
-          suite
+          hostname
           platform
+          suite
           user
+          secrets
+          userPackages
           ; # Inherit variables.
-
-        userPackages = {
-          fluffychat = fluffychat-2_0_0.legacyPackages.${system}.fluffychat;
-          feishin = feishin-0_17_0.legacyPackages.${system}.feishin;
-          webone = pkgs.callPackage ./packages/webone {};
-        };
-
-        secrets = builtins.toString inputs.secrets; # Secrets directory.
       };
 
       modules =
@@ -60,7 +77,7 @@ in {
       profiles.system = {
         user = "root";
         sshUser = user;
-        path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.${hostname};
+        path = pkgs-deploy-rs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostname};
       };
     };
   };

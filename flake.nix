@@ -3,7 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05"; # Stable nixpkgs.
-    deploy-rs.url = "github:serokell/deploy-rs";
+    nixpkgs-pr-fluffychat.url = "github:NixOS/nixpkgs?ref=pull/419632/head"; # FluffyChat 2.0.0
+    nixpkgs-pr-feishin.url = "github:NixOS/nixpkgs?ref=pull/414929/head"; # Feishin 0.17.0
+
+    deploy-rs.url = "github:serokell/deploy-rs"; # Remote deployment
     lanzaboote.url = "github:nix-community/lanzaboote"; # Secure boot.
     nixos-hardware.url = "github:NixOS/nixos-hardware"; # Hardware specific config.
     sops-nix.url = "github:Mic92/sops-nix"; # Secrets management.
@@ -14,10 +17,6 @@
       url = "git+ssh://git@docker.local:222/fern/secrets?ref=main";
       flake = false;
     };
-
-    # Packages.
-    fluffychat-2_0_0.url = "github:NixOS/nixpkgs?ref=pull/419632/head"; # FluffyChat 2.0.0
-    feishin-0_17_0.url = "github:NixOS/nixpkgs?ref=pull/414929/head"; # Feishin 0.17.0
   };
 
   outputs = {

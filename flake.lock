@@ -35,22 +35,6 @@
         "type": "github"
       }
     },
-    "feishin-0_17_0": {
-      "locked": {
-        "lastModified": 1751534869,
-        "narHash": "sha256-kUYk/jPyX5Lnhv7vUUfNVSHUDA8k28xi2H5bt6a1EHg=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "2ee9ef97da93af5e84cc07ee07ba79b869d162ea",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "pull/414929/head",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -140,22 +124,6 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "fluffychat-2_0_0": {
-      "locked": {
-        "lastModified": 1751127166,
-        "narHash": "sha256-dX9VUpl3YM9XexkU+QGj1UfptYy/jIOeB3tSMtJSRgE=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "b5aec1f9cd51c508ee7488113bc2f192cc1143f8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "pull/419632/head",
-        "repo": "nixpkgs",
         "type": "github"
       }
     },
@@ -259,6 +227,38 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-pr-feishin": {
+      "locked": {
+        "lastModified": 1751534869,
+        "narHash": "sha256-kUYk/jPyX5Lnhv7vUUfNVSHUDA8k28xi2H5bt6a1EHg=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "2ee9ef97da93af5e84cc07ee07ba79b869d162ea",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "pull/414929/head",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-pr-fluffychat": {
+      "locked": {
+        "lastModified": 1751127166,
+        "narHash": "sha256-dX9VUpl3YM9XexkU+QGj1UfptYy/jIOeB3tSMtJSRgE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "b5aec1f9cd51c508ee7488113bc2f192cc1143f8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "pull/419632/head",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -400,11 +400,11 @@
     "root": {
       "inputs": {
         "deploy-rs": "deploy-rs",
-        "feishin-0_17_0": "feishin-0_17_0",
-        "fluffychat-2_0_0": "fluffychat-2_0_0",
         "lanzaboote": "lanzaboote",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_3",
+        "nixpkgs-pr-feishin": "nixpkgs-pr-feishin",
+        "nixpkgs-pr-fluffychat": "nixpkgs-pr-fluffychat",
         "nixvim": "nixvim",
         "secrets": "secrets",
         "sops-nix": "sops-nix"
