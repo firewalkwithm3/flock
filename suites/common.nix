@@ -237,6 +237,7 @@ with lib; {
       clipboard.providers.wl-copy.enable = true;
 
       plugins = {
+        auto-session.enable = true;
         colorizer.enable = true;
         comment.enable = true;
         gitsigns.enable = true;
