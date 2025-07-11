@@ -1,7 +1,6 @@
 inputs:
 with inputs;
-with inputs.nixpkgs.lib; let
-in {
+with inputs.nixpkgs.lib; {
   mergeHosts = lists.foldl' (
     a: b: attrsets.recursiveUpdate a b
   ) {};
@@ -45,40 +44,42 @@ in {
       feishin = (import nixpkgs-pr-feishin {inherit system;}).feishin;
       webone = pkgs.callPackage ./packages/webone {};
     };
-  in {
-    nixosConfigurations.${hostname} = nixosSystem rec {
-      inherit system pkgs;
+  in
+    {
+      nixosConfigurations.${hostname} = nixosSystem rec {
+        inherit system pkgs;
 
-      specialArgs = {
-        inherit
-          nixpkgs
-          hostname
-          platform
-          suite
-          user
-          secrets
-          userPackages
-          ; # Inherit variables.
+        specialArgs = {
+          inherit
+            nixpkgs
+            hostname
+            platform
+            suite
+            user
+            secrets
+            userPackages
+            ; # Inherit variables.
+        };
+
+        modules =
+          [
+            nixvim.nixosModules.nixvim
+            ./suites/common.nix
+            ./suites/${suite}.nix
+            ./hosts/${suite}/${hostname}.nix
+          ]
+          ++ (filesystem.listFilesRecursive ./modules)
+          ++ extraModules;
       };
-
-      modules =
-        [
-          nixvim.nixosModules.nixvim
-          ./suites/common.nix
-          ./suites/${suite}.nix
-          ./hosts/${suite}/${hostname}.nix
-        ]
-        ++ (filesystem.listFilesRecursive ./modules)
-        ++ extraModules;
-    };
-
-    deploy.nodes.${hostname} = {
-      hostname = "${hostname}.local";
-      profiles.system = {
-        user = "root";
-        sshUser = user;
-        path = pkgs-deploy-rs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostname};
+    }
+    // optionalAttrs (suite != "laptop") {
+      deploy.nodes.${hostname} = {
+        hostname = "${hostname}.local";
+        profiles.system = {
+          user = "root";
+          sshUser = user;
+          path = pkgs-deploy-rs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostname};
+        };
       };
     };
-  };
 }
