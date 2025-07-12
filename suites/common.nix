@@ -109,11 +109,11 @@ with lib; {
 
       keymaps = [
         {
-          key = "<Leader>t";
-          action = "<cmd> ToggleTerm direction=horizontal <CR>";
+          key = "<Leader>tt";
+          action = "<cmd> ToggleTerm direction=float <CR>";
         }
         {
-          key = "<Leader>x";
+          key = "<Leader>xx";
           action = "<cmd> Trouble diagnostics toggle focus=false<CR>";
         }
       ];
@@ -139,7 +139,6 @@ with lib; {
         colorizer.enable = true;
         comment.enable = true;
         gitsigns.enable = true;
-        lazygit.enable = true;
         lsp-format.enable = true;
         notify.enable = true;
         nvim-autopairs.enable = true;
@@ -176,8 +175,18 @@ with lib; {
                 "fallback"
               ];
             };
-            completion.menu.auto_show = true;
-            completion.documentation.auto_show = true;
+            completion = {
+              menu.auto_show = true;
+              documentation.auto_show = true;
+              list.selection.preselect = false;
+            };
+            cmdline = {
+              keymap.preset = "inherit";
+              completion = {
+                menu.auto_show = true;
+                list.selection.preselect = false;
+              };
+            };
           };
         };
 
