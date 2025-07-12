@@ -69,6 +69,9 @@ with lib; {
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
+      # set gruvbox theme
+      theme_gruvbox
+
       # yazi cd on quit.
       function y
         set tmp (mktemp -t "yazi-cwd.XXXXXX")
@@ -217,6 +220,7 @@ with lib; {
   environment.systemPackages = with pkgs; [
     aria2
     btop
+    fishPlugins.gruvbox
     lynx
     ncdu
     rsync
