@@ -46,7 +46,7 @@ with inputs.nixpkgs.lib; {
     };
   in
     {
-      nixosConfigurations.${hostname} = nixosSystem rec {
+      nixosConfigurations.${hostname} = nixosSystem {
         inherit system pkgs;
 
         specialArgs = {
