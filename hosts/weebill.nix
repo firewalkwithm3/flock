@@ -20,12 +20,6 @@
     };
   };
 
-  # Open ports for DHCP server.
-  networking.firewall.allowedUDPPorts = [
-    53
-    67
-  ];
-
   # Enable WebOne HTTP proxy.
   services.webone.enable = true;
 
@@ -39,5 +33,13 @@
         "read-only" = true;
       };
     };
+  };
+  # Open ports for services.
+  networking.firewall = {
+    allowedUDPPorts = [
+      53 # DHCP server.
+      67 # DHCP server.
+    ];
+    allowedTCPPorts = [8080 548]; # WebOne & Netatalk.
   };
 }
