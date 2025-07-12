@@ -27,10 +27,13 @@
   services.netatalk = {
     enable = true;
     settings = {
-      Global."uam list" = "uams_guest.so";
+      Global = {
+        "uam list" = "uams_guest.so";
+      };
       iMac = {
         path = "/srv/iMac";
-        "read-only" = true;
+        browsable = "yes";
+        "read-only" = "yes";
       };
     };
   };

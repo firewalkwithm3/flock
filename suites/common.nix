@@ -245,6 +245,7 @@ with lib; {
       enable = true;
       addresses = true;
       domain = true;
+      userServices = true;
     };
   };
 }
