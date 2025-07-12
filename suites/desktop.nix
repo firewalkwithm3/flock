@@ -68,6 +68,7 @@ with lib; {
   # Theme QT applications
   qt = {
     enable = true;
+    platformTheme = "gnome";
     style = "adwaita-dark";
   };
 
