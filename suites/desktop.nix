@@ -103,6 +103,7 @@ with lib; {
     ansible
     caligula
     celluloid
+    deploy-rs
     discord
     ghostty
     gimp3
