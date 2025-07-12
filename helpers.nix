@@ -43,6 +43,7 @@ with inputs.nixpkgs.lib; {
       fluffychat = (import nixpkgs-pr-fluffychat {inherit system;}).fluffychat;
       feishin = (import nixpkgs-pr-feishin {inherit system;}).feishin;
       webone = pkgs.callPackage ./packages/webone {};
+      yazi-flavour-gruvbox-dark = pkgs.callPackage ./packages/yazi-flavour-gruvbox {};
     };
   in
     {

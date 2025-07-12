@@ -1,5 +1,6 @@
 {
   nixpkgs,
+  userPackages,
   pkgs,
   lib,
   hostname,
@@ -70,7 +71,7 @@ with lib; {
     enable = true;
     interactiveShellInit = ''
       # set gruvbox theme
-      theme_gruvbox
+      theme_gruvbox dark hard
 
       # yazi cd on quit.
       function y
@@ -217,6 +218,14 @@ with lib; {
     };
   };
 
+  programs.yazi = {
+    enable = true;
+    flavors."gruvbox-dark.yazi" = userPackages.yazi-flavour-gruvbox-dark;
+    settings.theme = {
+      flavor.dark = "gruvbox-dark";
+    };
+  };
+
   environment.systemPackages = with pkgs; [
     aria2
     btop
@@ -226,7 +235,6 @@ with lib; {
     rsync
     tmux
     trash-cli
-    yazi
   ];
 
   # Enable avahi hostname resolution.
