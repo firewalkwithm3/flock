@@ -18,6 +18,11 @@
       fsType = "ext4";
       options = ["noatime"];
     };
+
+    "/srv/iMac" = {
+      device = "/dev/disk/by-uuid/48843b25-4d8c-4638-a5f8-fb3901e1165e";
+      fsType = "ext4";
+    };
   };
 
   # Enable WebOne HTTP proxy.
