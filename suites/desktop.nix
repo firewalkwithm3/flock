@@ -141,6 +141,12 @@ with lib; {
     ))
   ];
 
+  # Allow opening terminal applications from gnome app launcher.
+  xdg.terminal-exec = {
+    enable = true;
+    settings.default = ["ghostty.desktop"];
+  };
+
   # Enable gamemode service.
   programs.gamemode.enable = true;
 
