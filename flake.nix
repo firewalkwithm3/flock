@@ -40,7 +40,6 @@
       (mkHost "weebill" {
         suite = "server";
         platform = "aarch64-linux";
-        user = "docker";
         extraModules = [
           nixos-hardware.nixosModules.raspberry-pi-4
         ];
