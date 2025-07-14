@@ -59,6 +59,7 @@ with lib; {
   # Define a user account.
   users.users.${user} = {
     isNormalUser = true;
+    uid = 1000;
     description = mkIf (user == "fern") "Fern Garden";
     extraGroups = [
       "wheel"
