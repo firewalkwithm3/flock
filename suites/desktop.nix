@@ -1,6 +1,5 @@
 {
   pkgs,
-  userPackages,
   lib,
   ...
 }:
@@ -48,8 +47,8 @@ with lib; {
   services.xserver = {
     enable = true;
 
-    excludePackages = with pkgs; [
-      xterm # Don't install xterm.
+    excludePackages = [
+      pkgs.xterm # Don't install xterm.
     ];
 
     displayManager.gdm.enable = true;
@@ -105,6 +104,8 @@ with lib; {
     celluloid
     deploy-rs
     discord
+    feishin
+    fluffychat
     ghostty
     gimp3
     glabels-qt
@@ -118,27 +119,12 @@ with lib; {
     merriweather-sans
     nerd-fonts.fira-code
     obsidian
+    prismlauncher
+    prismlauncher
     protonmail-desktop
     signal-desktop
     smile
-    userPackages.feishin
     yubioath-flutter
-
-    # PrismLauncher with temurin jre.
-    (prismlauncher.override {
-      jdks = [
-        temurin-jre-bin
-      ];
-    })
-
-    # FluffyChat 2.0.0 with fixed desktop item.
-    (userPackages.fluffychat.overrideAttrs (
-      finalAttrs: previousAttrs: {
-        desktopItems = [
-          ((builtins.elemAt previousAttrs.desktopItems 0).override {startupWMClass = "fluffychat";})
-        ];
-      }
-    ))
   ];
 
   # Allow opening terminal applications from gnome app launcher.

@@ -1,6 +1,4 @@
 {
-  nixpkgs,
-  userPackages,
   pkgs,
   lib,
   hostname,
@@ -19,9 +17,6 @@ with lib; {
 
   # Add @wheel to trusted-users for remote deployments.
   nix.settings.trusted-users = ["root" "@wheel"];
-
-  # Set $NIX_PATH to flake input.
-  nix.nixPath = ["nixpkgs=${nixpkgs}"];
 
   # Enable redistributable firmware.
   hardware.enableRedistributableFirmware = true;
@@ -77,7 +72,7 @@ with lib; {
       # yazi cd on quit.
       function y
         set tmp (mktemp -t "yazi-cwd.XXXXXX")
-        ${pkgs.yazi}/bin/yazi $argv --cwd-file="$tmp"
+        yazi $argv --cwd-file="$tmp"
         if read -z cwd < "$tmp"; and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
           builtin cd -- "$cwd"
         end
@@ -89,10 +84,10 @@ with lib; {
   # https://nixos.wiki/wiki/Fish#Setting_fish_as_your_shell
   programs.bash = {
     interactiveShellInit = ''
-      if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
+      if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
       then
         shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
-        exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
+        exec fish $LOGIN_OPTION
       fi
     '';
   };
@@ -107,9 +102,12 @@ with lib; {
 
     nixvim = {
       enable = true;
+      defaultEditor = true;
 
+      # For telescope.
       dependencies.ripgrep.enable = true;
 
+      # Space as leader.
       globals.mapleader = " ";
 
       keymaps = [
@@ -226,7 +224,7 @@ with lib; {
 
   programs.yazi = {
     enable = true;
-    flavors."gruvbox-dark.yazi" = userPackages.yazi-flavour-gruvbox-dark;
+    flavors."gruvbox-dark.yazi" = pkgs.yazi-flavour-gruvbox-dark;
     settings.theme = {
       flavor.dark = "gruvbox-dark";
     };

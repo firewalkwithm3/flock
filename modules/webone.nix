@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  userPackages,
+  pkgs,
   ...
 }:
 with lib; let
@@ -47,13 +47,13 @@ in {
       startLimitIntervalSec = 5;
       startLimitBurst = 3;
       environment = {
-        OPENSSL_CONF = "${userPackages.webone}/lib/webone/openssl_webone.cnf";
+        OPENSSL_CONF = "${pkgs.webone}/lib/webone/openssl_webone.cnf";
       };
       serviceConfig = {
         Type = "simple";
         User = "webone";
         Group = "webone";
-        ExecStart = "${userPackages.webone}/bin/webone";
+        ExecStart = "${pkgs.webone}/bin/webone";
         TimeoutStopSec = "10";
         Restart = "on-failure";
         RestartSec = "5";
