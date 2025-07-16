@@ -6,10 +6,10 @@
 with inputs;
   final: prev: {
     # WebOne HTTP proxy.
-    webone = prev.pkgs.callPackage ../packages/webone {};
+    webone = prev.pkgs.callPackage ./packages/webone {};
 
     # Yazi Gruvbox theme.
-    yazi-flavour-gruvbox-dark = prev.pkgs.callPackage ../packages/yazi-flavour-gruvbox {};
+    yazi-flavour-gruvbox-dark = prev.pkgs.callPackage ./packages/yazi-flavour-gruvbox {};
 
     # Latest FluffyChat.
     fluffychat =

@@ -10,6 +10,7 @@ in {
   options.services.webone.enable = mkEnableOption "Enable WebOne HTTP proxy.";
 
   config = mkIf cfg.enable {
+    # Create user & group for service.
     users.groups.webone = {};
 
     users.users.webone = {
@@ -19,6 +20,7 @@ in {
       group = "webone";
     };
 
+    # Create config directory and log file, and set ownership to webone user.
     systemd.tmpfiles.settings = {
       "10-webone" = {
         "/var/log/webone.log" = {
@@ -38,6 +40,7 @@ in {
       };
     };
 
+    # Create a systemd service.
     systemd.services.webone = {
       description = "WebOne HTTP Proxy Server";
       documentation = ["https://github.com/atauenis/webone/wiki/"];

@@ -6,7 +6,7 @@
 with lib; {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
-    ./server.nix
+    ../. # Server config.
   ];
 
   # Load kernel modules.

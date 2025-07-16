@@ -1,4 +1,5 @@
 {
+  # Kernel modules
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "nvme"
@@ -8,6 +9,7 @@
 
   boot.kernelModules = ["kvm-intel"];
 
+  # Root filesystem.
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/63d79656-aa5b-466a-b369-be5eac3f51ab";
     fsType = "ext4";
@@ -15,6 +17,7 @@
 
   boot.initrd.luks.devices."luks-93fa00bc-777f-4359-bad5-880c29faca0d".device = "/dev/disk/by-uuid/93fa00bc-777f-4359-bad5-880c29faca0d";
 
+  # EFI/boot partition.
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/EBD7-3E1C";
     fsType = "vfat";
@@ -24,7 +27,9 @@
     ];
   };
 
+  # Allow CPU microcode.
   hardware.cpu.intel.updateMicrocode = true;
 
+  # Allows remote deployment on ARM systems (ie. Raspberry Pi).
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
 }

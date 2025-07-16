@@ -25,38 +25,44 @@
     sops-nix,
     ...
   } @ inputs: let
-    flock.lib = import ./lib inputs;
-    inherit (flock.lib) mergeHosts mkHost;
+    # Import helpers & make functions available.
+    helpers = import ./helpers.nix inputs;
+    inherit (helpers) mergeHosts mkHost;
   in
     mergeHosts [
+      # ThinkPad T480.
       (mkHost "muskduck" {
         suite = "desktop";
-        extraModules = [
+        hostModules = [
           lanzaboote.nixosModules.lanzaboote
           nixos-hardware.nixosModules.lenovo-thinkpad-t480
         ];
       })
 
+      # Raspberry Pi 4B.
       (mkHost "weebill" {
         suite = "server";
         platform = "aarch64-linux";
-        extraModules = [
+        hostModules = [
           nixos-hardware.nixosModules.raspberry-pi-4
         ];
       })
 
+      # VM running a Minecraft server.
       (mkHost "minecraft" {
-        suite = "vm";
-        user = "docker";
+        suite = "server/vm";
+        docker = true;
       })
 
+      # Container running Technitium DNS Server.
       (mkHost "technitium" {
-        suite = "lxc";
+        suite = "server/lxc";
       })
 
+      # Container running Mozilla's syncstorage-rs
       (mkHost "firefox-syncserver" {
-        suite = "lxc";
-        extraModules = [
+        suite = "server/lxc";
+        hostModules = [
           sops-nix.nixosModules.sops
         ];
       })

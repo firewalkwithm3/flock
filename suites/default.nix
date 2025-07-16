@@ -52,10 +52,10 @@ with lib; {
   networking.hostName = hostname;
 
   # Define a user account.
-  users.users.${user} = {
+  users.users.fern = {
     isNormalUser = true;
     uid = 1000;
-    description = mkIf (user == "fern") "Fern Garden";
+    description = "Fern Garden";
     extraGroups = [
       "wheel"
       "networkmanager"
@@ -95,6 +95,9 @@ with lib; {
   # https://discourse.nixos.org/t/slow-build-at-building-man-cache/52365/2
   documentation.man.generateCaches = false;
 
+  # Enable all terminfo (for ghostty).
+  environment.enableAllTerminfo = true;
+
   # Install some packages.
   programs = {
     git.enable = true;
@@ -102,9 +105,11 @@ with lib; {
 
     nixvim = {
       enable = true;
+
+      # Set $EDITOR
       defaultEditor = true;
 
-      # For telescope.
+      # For telescope grep.
       dependencies.ripgrep.enable = true;
 
       # Space as leader.
@@ -127,7 +132,10 @@ with lib; {
 
       colorschemes.gruvbox = {
         enable = true;
-        settings.contrast = "hard";
+        settings = {
+          contrast = "hard";
+          overrides.SignColumn.bg = "none";
+        };
       };
 
       opts = rec {

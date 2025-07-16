@@ -1,4 +1,5 @@
 {pkgs, ...}: {
+  # Boot loader.
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
     initrd.availableKernelModules = [
@@ -13,12 +14,14 @@
   };
 
   fileSystems = {
+    # Root filesystem.
     "/" = {
       device = "/dev/disk/by-label/NIXOS_SD";
       fsType = "ext4";
       options = ["noatime"];
     };
 
+    # AFP share.
     "/srv/iMac" = {
       device = "/dev/disk/by-uuid/48843b25-4d8c-4638-a5f8-fb3901e1165e";
       fsType = "ext4";

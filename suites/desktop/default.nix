@@ -4,6 +4,8 @@
   ...
 }:
 with lib; {
+  imports = [../.]; # Common config.
+
   # Configure the bootloader.
   boot = {
     # Enable secure boot.
