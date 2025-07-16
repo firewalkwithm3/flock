@@ -25,8 +25,8 @@
     sops-nix,
     ...
   } @ inputs: let
-    helpers = import ./helpers.nix inputs;
-    inherit (helpers) mergeHosts mkHost;
+    flock.lib = import ./lib inputs;
+    inherit (flock.lib) mergeHosts mkHost;
   in
     mergeHosts [
       (mkHost "muskduck" {
@@ -44,11 +44,6 @@
           nixos-hardware.nixosModules.raspberry-pi-4
         ];
       })
-
-      # (mkHost "docker" {
-      #   suite = "vm";
-      #   user = "docker";
-      # })
 
       (mkHost "minecraft" {
         suite = "vm";
