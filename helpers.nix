@@ -11,44 +11,21 @@ with inputs.nixpkgs.lib; {
     user ? "fern",
     extraModules ? [],
   }: let
-    system = platform;
-
-    secrets = builtins.toString inputs.secrets;
-
-    pkgs = import nixpkgs {
-      inherit system;
-      config = {
-        allowUnfree = true;
-        permittedInsecurePackages = [
-          "dotnet-sdk-6.0.428"
-          "dotnet-runtime-6.0.36"
-        ];
-      };
-    };
-
-    pkgs-deploy-rs = import nixpkgs {
-      inherit system;
-      overlays = [
-        deploy-rs.overlays.default
-        (self: super: {
-          deploy-rs = {
-            inherit (pkgs) deploy-rs;
-            lib = super.deploy-rs.lib;
-          };
-        })
-      ];
-    };
-
-    userPackages = {
-      fluffychat = (import nixpkgs-pr-fluffychat {inherit system;}).fluffychat;
-      feishin = (import nixpkgs-pr-feishin {inherit system;}).feishin;
-      webone = pkgs.callPackage ./packages/webone {};
-      yazi-flavour-gruvbox-dark = pkgs.callPackage ./packages/yazi-flavour-gruvbox {};
-    };
   in
     {
       nixosConfigurations.${hostname} = nixosSystem {
-        inherit system pkgs;
+        system = platform;
+        pkgs = import nixpkgs {
+          inherit system;
+          config = {
+            allowUnfree = true;
+            permittedInsecurePackages = [
+              "dotnet-sdk-6.0.428"
+              "dotnet-runtime-6.0.36"
+            ];
+          };
+          overlays = [(import ./overlay.nix inputs)];
+        };
 
         specialArgs = {
           inherit
@@ -57,9 +34,8 @@ with inputs.nixpkgs.lib; {
             platform
             suite
             user
-            secrets
-            userPackages
             ; # Inherit variables.
+          secrets = builtins.toString inputs.secrets;
         };
 
         modules =
@@ -79,7 +55,7 @@ with inputs.nixpkgs.lib; {
         profiles.system = {
           user = "root";
           sshUser = user;
-          path = pkgs-deploy-rs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostname};
+          path = pkgs.deploy-rs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostname};
         };
       };
     };

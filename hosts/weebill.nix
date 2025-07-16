@@ -42,6 +42,7 @@
       };
     };
   };
+
   # Open ports for services.
   networking.firewall = {
     allowedUDPPorts = [

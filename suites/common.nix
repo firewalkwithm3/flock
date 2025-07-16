@@ -114,12 +114,16 @@ with lib; {
 
       keymaps = [
         {
-          key = "<Leader>tt";
+          key = "<Leader>t";
           action = "<cmd> ToggleTerm direction=float <CR>";
         }
         {
-          key = "<Leader>xx";
-          action = "<cmd> Trouble diagnostics toggle focus=false<CR>";
+          key = "<Leader>x";
+          action = "<cmd> Trouble diagnostics toggle focus=false <CR>";
+        }
+        {
+          key = "<Leader>y";
+          action = "<cmd> Yazi <CR>";
         }
       ];
 
@@ -151,6 +155,7 @@ with lib; {
         toggleterm.enable = true;
         trouble.enable = true;
         web-devicons.enable = true;
+        yazi.enable = true;
 
         lualine = {
           enable = true;
