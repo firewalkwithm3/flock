@@ -119,7 +119,7 @@ with lib; {
     libreoffice
     merriweather
     merriweather-sans
-    nerd-fonts.fira-code
+    nerd-fonts
     obsidian
     prismlauncher
     prismlauncher
