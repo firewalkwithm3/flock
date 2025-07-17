@@ -117,9 +117,6 @@ with lib; {
     gnomeExtensions.smile-complementary-extension
     jellyfin-media-player
     libreoffice
-    merriweather
-    merriweather-sans
-    nerd-fonts
     obsidian
     prismlauncher
     prismlauncher
@@ -127,6 +124,11 @@ with lib; {
     signal-desktop
     smile
     yubioath-flutter
+  ];
+
+  fonts.packages = with pkgs; [
+    merriweather
+    iosevka
   ];
 
   # Allow opening terminal applications from gnome app launcher.

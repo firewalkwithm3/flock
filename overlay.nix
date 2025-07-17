@@ -59,4 +59,30 @@ with inputs;
         prev.pkgs.temurin-jre-bin
       ];
     };
+
+    iosevka = prev.iosevka.override {
+      set = "Custom";
+
+      privateBuildPlan = {
+        family = "IosevkaCustom";
+        spacing = "term";
+        serifs = "sans";
+        noCvSs = false;
+        exportGlyphNames = true;
+        variants.inherits = "ss05";
+
+        weights = {
+          Regular = {
+            shape = 400;
+            menu = 400;
+            css = 400;
+          };
+          Bold = {
+            shape = 700;
+            menu = 700;
+            css = 700;
+          };
+        };
+      };
+    };
   }
