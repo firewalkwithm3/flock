@@ -39,6 +39,15 @@
         ];
       })
 
+      # ThinkPad X220.
+      (mkHost "pardalote" {
+        suite = "desktop";
+        hostModules = [
+          lanzaboote.nixosModules.lanzaboote
+          nixos-hardware.nixosModules.lenovo-thinkpad-x220
+        ];
+      })
+
       # Raspberry Pi 4B.
       (mkHost "weebill" {
         suite = "server";
