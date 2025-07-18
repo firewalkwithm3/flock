@@ -9,7 +9,7 @@ with lib; {
   # Configure the bootloader.
   boot = {
     # Enable systemd-boot
-    loader.systemd-boot.enable = false;
+    loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
 
     # Enable quiet boot with splash
