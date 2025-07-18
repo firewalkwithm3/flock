@@ -8,17 +8,9 @@ with lib; {
 
   # Configure the bootloader.
   boot = {
-    # Enable secure boot.
-    bootspec.enable = true;
-    initrd.systemd.enable = true;
-    loader.systemd-boot.enable = mkForce false;
+    # Enable systemd-boot
+    loader.systemd-boot.enable = false;
     loader.efi.canTouchEfiVariables = true;
-
-    lanzaboote = {
-      enable = true;
-      pkiBundle = "/var/lib/sbctl";
-      settings.timeout = 0;
-    };
 
     # Enable quiet boot with splash
     plymouth.enable = true;

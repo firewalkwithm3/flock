@@ -1,5 +1,6 @@
-{
-  # Kernel modules
+{lib, ...}:
+with lib; {
+  # Kernel modules.
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "nvme"
@@ -8,6 +9,17 @@
   ];
 
   boot.kernelModules = ["kvm-intel"];
+
+  # Enable lanzaboote & secure boot.
+  boot.initrd.systemd.enable = true;
+  boot.loader.systemd-boot.enable = mkForce false;
+  boot.bootspec.enable = true;
+
+  boot.lanzaboote = {
+    enable = true;
+    pkiBundle = "/var/lib/sbctl";
+    settings.timeout = 0;
+  };
 
   # Root filesystem.
   fileSystems."/" = {
@@ -26,9 +38,6 @@
       "dmask=0077"
     ];
   };
-
-  # Allow CPU microcode.
-  hardware.cpu.intel.updateMicrocode = true;
 
   # Allows remote deployment on ARM systems (ie. Raspberry Pi).
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
