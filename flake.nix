@@ -12,6 +12,12 @@
     sops-nix.url = "github:Mic92/sops-nix"; # Secrets management.
     nixvim.url = "github:nix-community/nixvim"; # Neovim.
 
+    # Home manager.
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Secrets repo.
     secrets = {
       url = "git+ssh://git@docker.local:222/fern/secrets?ref=main";

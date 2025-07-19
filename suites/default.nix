@@ -215,6 +215,7 @@ with lib; {
               settings.formatting.command = ["${pkgs.alejandra}/bin/alejandra"];
               settings.options.nixos.expr = "(builtins.getFlake (builtins.toString /home/fern/Repositories/flock)).nixosConfigurations.muskduck.options";
             };
+            docker_compose_language_service.enable = true;
           };
         };
 

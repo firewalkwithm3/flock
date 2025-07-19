@@ -155,4 +155,15 @@ with lib; {
   services.power-profiles-daemon.enable = mkForce false; # enabled by gnome
   services.tlp.enable = mkForce false; # enabled by nixos-hardware
   services.auto-cpufreq.enable = true;
+
+  # Home manager settings.
+  home-manager.users.fern = {
+    programs.ghostty = {
+      enable = true;
+      settings = {
+        font-family = "IosevkaCustom";
+        theme = "GruvboxDarkHard";
+      };
+    };
+  };
 }

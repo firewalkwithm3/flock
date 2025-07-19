@@ -76,8 +76,20 @@ with inputs.nixpkgs.lib; {
         modules =
           [
             nixvim.nixosModules.nixvim # Neovim.
+
             ./suites/${suite} # Collection of configuration options for different types of systems.
             ./hosts/${hostname} # Host-specific config.
+
+            # Home manager.
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                backupFileExtension = "backup";
+                users.fern = ./home.nix;
+              };
+            }
           ]
           ++ extraModules;
       };
