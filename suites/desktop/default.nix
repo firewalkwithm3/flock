@@ -168,7 +168,12 @@ with lib; {
     };
 
     # Gnome settings.
-    dconf.settings = {
+    dconf.settings = let
+      wallpaper = pkgs.fetchurl {
+        url = "https://git.fern.garden/fern/flock/raw/branch/main/suites/desktop/wallpaper.jpg";
+        hash = "sha256-NOEJy8Tlag7pySdQnwxARJHFTzLpfwrwfksnH0/y8Mc=";
+      };
+    in {
       "org/gnome/desktop/interface".accent-color = "green"; # Main colour used throughout interface.
       "org/gnome/desktop/interface".clock-show-seconds = true; # Show seconds on menubar clock.
       "org/gnome/desktop/interface".clock-show-weekday = true; # Show weekday on menubar clock.
@@ -209,6 +214,9 @@ with lib; {
         command = "ghostty";
         name = "Open Terminal";
       };
+
+      "org/gnome/desktop/background".picture-uri = "file://${wallpaper}";
+      "org/gnome/desktop/background".picture-uri-dark = "file://${wallpaper}";
     };
   };
 }
