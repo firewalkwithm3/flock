@@ -69,6 +69,12 @@
         docker = true;
       })
 
+      # VM running a Musicbrainz mirror + lidarr metadata server.
+      (mkHost "musicbrainz" {
+        suite = "server/vm";
+        docker = true;
+      })
+
       # Container running Technitium DNS Server.
       (mkHost "technitium" {
         suite = "server/lxc";
