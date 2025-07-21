@@ -135,7 +135,7 @@ with lib; {
   # Enable CUPS to print documents.
   services.printing = {
     enable = true;
-    drivers = [pkgs.brlaser];
+    drivers = [pkgs.brlaser pkgs.cups-dymo];
   };
 
   # If you don't set this Wireguard won't work.
