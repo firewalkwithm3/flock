@@ -11,6 +11,9 @@ with inputs;
     # Yazi Gruvbox theme.
     yazi-flavour-gruvbox-dark = prev.pkgs.callPackage ./packages/yazi-flavour-gruvbox {};
 
+    # Dymo label printer drivers.
+    cups-dymo = prev.pkgs.callPackage ./packages/cups-dymo {};
+
     # Latest FluffyChat.
     fluffychat =
       (import nixpkgs-pr-fluffychat
