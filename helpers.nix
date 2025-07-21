@@ -100,7 +100,7 @@ with inputs.nixpkgs.lib; {
         profiles.system = {
           user = "root";
           sshuser = "fern";
-          path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosconfigurations.${hostname};
+          path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostname};
         };
       };
     };
