@@ -128,6 +128,10 @@ with lib; {
           key = "<Leader>y";
           action = "<cmd> Yazi <CR>";
         }
+        {
+          key = "<Leader>fs";
+          action = "<cmd> SessionSearch <CR>";
+        }
       ];
 
       colorschemes.gruvbox = {
