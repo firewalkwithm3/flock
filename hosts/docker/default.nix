@@ -1,4 +1,4 @@
-{
+{pkgs, ...}: {
   # Root filesystem.
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/cac60222-9b38-4938-8b17-5fddd67e8e26";
@@ -15,4 +15,29 @@
   swapDevices = [
     {device = "/dev/disk/by-uuid/025beadb-a89b-4abe-8d0c-b55401316319";}
   ];
+
+  # Media HDDs.
+  fileSystems."/mnt/hdd0" = {
+    device = "/dev/disk/by-uuid/fcee0188-8ca1-4fda-81b7-f5920c79ab48";
+    fsType = "ext4";
+  };
+  fileSystems."/mnt/hdd1" = {
+    device = "/dev/disk/by-uuid/5d9dd538-79e4-4168-be91-e0b040155cb3";
+    fsType = "ext4";
+  };
+  fileSystems."/mnt/hdd2" = {
+    device = "/dev/disk/by-uuid/5a43b7dc-3e28-459e-824a-ad45b5475361";
+    fsType = "ext4";
+  };
+
+  # MergerFS
+  environment.systemPackages = with pkgs; [
+    mergerfs
+  ];
+
+  fileSystems."/media" = {
+    fsType = "fuse.mergerfs";
+    device = "/mnt/hdd*";
+    options = ["cache.files=partial" "dropcacheonclose=true" "category.create=mfs" "func.getattr=newest"];
+  };
 }
