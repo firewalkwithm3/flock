@@ -2,7 +2,6 @@
   pkgs,
   lib,
   hostname,
-  user,
   ...
 }:
 with lib; {

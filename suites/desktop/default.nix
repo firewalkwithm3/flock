@@ -28,7 +28,7 @@ with lib; {
   # Enable firmware updates.
   services.fwupd.enable = true;
 
-  # Enable zRAM swap
+  # Enable zram swap.
   zramSwap.enable = true;
 
   # Enable smart card support (for YubiKey).
@@ -93,7 +93,6 @@ with lib; {
 
   environment.systemPackages = with pkgs; [
     adwsteamgtk
-    ansible
     caligula
     celluloid
     discord
@@ -109,7 +108,6 @@ with lib; {
     jellyfin-media-player
     libreoffice
     obsidian
-    prismlauncher
     prismlauncher
     protonmail-desktop
     signal-desktop
@@ -137,7 +135,7 @@ with lib; {
     drivers = [pkgs.brlaser pkgs.cups-dymo];
   };
 
-  # If you don't set this Wireguard won't work.
+  # https://github.com/tailscale/tailscale/issues/4432#issuecomment-1112819111
   networking.firewall.checkReversePath = false;
 
   # Enable sound with pipewire.
