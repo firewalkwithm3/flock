@@ -269,4 +269,13 @@ with lib; {
       userServices = true;
     };
   };
+
+  # Home manager settings.
+  home-manager.users.fern = {
+    programs.git = {
+      enable = true;
+      userEmail = "mail@fern.garden";
+      userName = "Fern Garden";
+    };
+  };
 }
