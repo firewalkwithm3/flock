@@ -63,6 +63,12 @@
         ];
       })
 
+      # VM running docker containers.
+      (mkHost "docker" {
+        suite = "server/vm";
+        docker = true;
+      })
+
       # VM running a Minecraft server.
       (mkHost "minecraft" {
         suite = "server/vm";
