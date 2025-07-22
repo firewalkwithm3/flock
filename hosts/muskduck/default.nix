@@ -38,7 +38,4 @@ with lib; {
       "dmask=0077"
     ];
   };
-
-  # Allows remote deployment on ARM systems (ie. Raspberry Pi).
-  boot.binfmt.emulatedSystems = ["aarch64-linux"];
 }

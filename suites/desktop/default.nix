@@ -96,7 +96,6 @@ with lib; {
     ansible
     caligula
     celluloid
-    deploy-rs
     discord
     feishin
     fluffychat
