@@ -94,6 +94,14 @@
         ];
       })
 
+      # Container running Nextcloud.
+      (mkHost "nextcloud" {
+        suite = "server/lxc";
+        hostModules = [
+          sops-nix.nixosModules.sops
+        ];
+      })
+
       # Container for automatic deployments.
       (mkHost "ornithologist" {
         suite = "server/lxc";
