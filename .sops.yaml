@@ -1,11 +1,11 @@
 keys:
   - &admin_fern age1n9q3cspp4a6qvjv9xaf00e5d5za3d8upz4akj2fh6zt5ly3ahans3vpx5x
   - &server_firefox-syncserver age1hrvts2jkdclk3f9atjry7chuakt5n9qmlwfwsdlcnmc88ld3ysuqz6ejge
-  # - &server_nextcloud
+  - &server_nextcloud age1fn3y3km7wuftvrc2ds78ceu2wfrya0l5up0gshhnyhrq7gyglu0s2j8mpm
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
     - age:
       - *admin_fern
       - *server_firefox-syncserver
-      # - *server_nextcloud
+      - *server_nextcloud
