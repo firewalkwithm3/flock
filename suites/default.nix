@@ -64,6 +64,11 @@ with lib; {
   # Use fish shell
   programs.fish = {
     enable = true;
+    shellAbbrs = {
+      nrs = "nixos-rebuild switch --use-remote-sudo --flake /home/fern/Repositories/flock/";
+      nrt = "nixos-rebuild test --use-remote-sudo --flake /home/fern/Repositories/flock/";
+      nrb = "nixos-rebuild boot --use-remote-sudo --flake /home/fern/Repositories/flock/";
+    };
     interactiveShellInit = ''
       # set gruvbox theme
       theme_gruvbox dark hard
