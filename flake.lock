@@ -456,11 +456,11 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1751952212,
-        "narHash": "sha256-2W/h9pas2gJrRtrZYzBxXUZ99i6W3xXtfiIxOI19rhs=",
+        "lastModified": 1753189540,
+        "narHash": "sha256-1kIA3wHUw8Vlc7VxM4HuBhbaR/d+hKXbRtuDYm2YQ2c=",
         "ref": "main",
-        "rev": "11bb31b71e2ef6795c9b0184f9e10e2946071ed8",
-        "revCount": 1,
+        "rev": "fa4f376b81efb6a9313e3d43d0361853b9389b84",
+        "revCount": 2,
         "type": "git",
         "url": "ssh://git@docker.local:222/fern/secrets"
       },
