@@ -17,5 +17,6 @@
     hostName = "localhost";
     config.adminpassFile = config.sops.secrets."nextcloud/admin_pass".path;
     config.dbtype = "pgsql";
+    database.createLocally = true;
   };
 }
