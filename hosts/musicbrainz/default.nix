@@ -10,7 +10,7 @@
   };
 
   swapDevices = [
-    {device = "/dev/disk/by-uuid/1402e27f-861f-4ecd-8b46-a29461ec3eeb";}
+    {device = "/dev/disk/by-uuid/b2456f94-1a8b-4de4-bd49-a9909d7487ec";}
   ];
 
   # Update Musicbrainz search indexes once a week.
