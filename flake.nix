@@ -96,7 +96,7 @@
 
       # Container for automatic deployments.
       (mkHost "ornithologist" {
-        suite = "server/lxc";
+        suite = "server/vm";
       })
     ];
 }
