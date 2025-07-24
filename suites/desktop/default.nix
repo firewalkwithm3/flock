@@ -23,6 +23,9 @@ with lib; {
       "udev.log_priority=3"
       "rd.systemd.show_status=auto"
     ];
+
+    # Allow emulating aarch64 to build for Raspberry Pi.
+    binfmt.emulatedSystems = ["aarch64-linux"];
   };
 
   # Enable firmware updates.
