@@ -93,10 +93,5 @@
           sops-nix.nixosModules.sops
         ];
       })
-
-      # Container for automatic deployments.
-      (mkHost "ornithologist" {
-        suite = "server/vm";
-      })
     ];
 }
