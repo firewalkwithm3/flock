@@ -67,8 +67,6 @@ with inputs.nixpkgs.lib; {
           # Make some variables accesible to modules.
           inherit
             hostname
-            platform
-            suite
             secrets
             ;
         };
