@@ -14,9 +14,6 @@ with lib; {
     "flakes"
   ];
 
-  # Add @wheel to trusted-users for remote deployments.
-  nix.settings.trusted-users = ["root" "@wheel"];
-
   # Enable redistributable firmware.
   hardware.enableRedistributableFirmware = true;
 
@@ -253,6 +250,7 @@ with lib; {
     fishPlugins.gruvbox
     lynx
     ncdu
+    nh
     rsync
     tmux
     trash-cli

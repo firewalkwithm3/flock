@@ -1,6 +1,9 @@
 {
   imports = [../.]; # Common config.
 
+  # Add @wheel to trusted-users for remote deployments.
+  nix.settings.trusted-users = ["root" "@wheel"];
+
   # Passwordless sudo.
   security.sudo.wheelNeedsPassword = false;
 
