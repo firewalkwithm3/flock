@@ -11,6 +11,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware"; # Hardware specific config.
     sops-nix.url = "github:Mic92/sops-nix"; # Secrets management.
     nixvim.url = "github:nix-community/nixvim"; # Neovim.
+    nh.url = "github:nix-community/nh"; # Yet another Nix CLI helper.
 
     # Home manager.
     home-manager = {

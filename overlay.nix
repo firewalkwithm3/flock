@@ -14,6 +14,9 @@ with inputs;
     # Dymo label printer drivers.
     cups-dymo = prev.pkgs.callPackage ./packages/cups-dymo {};
 
+    # Latest nh from git.
+    nh = nh.packages.${system}.nh;
+
     # Latest FluffyChat.
     fluffychat =
       (import nixpkgs-pr-fluffychat
