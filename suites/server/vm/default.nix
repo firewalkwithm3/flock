@@ -20,9 +20,6 @@ with lib; {
 
   boot.kernelModules = ["kvm-intel"];
 
-  # Enable DHCP.
-  networking.useDHCP = mkDefault true;
-
   # Configure the bootloader.
   boot.loader.grub = {
     enable = true;
