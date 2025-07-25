@@ -43,7 +43,7 @@
   fileSystems."/media" = {
     fsType = "fuse.mergerfs";
     depends = ["/mnt/hdd0" "/mnt/hdd1" "/mnt/hdd2"];
-    device = "/mnt/hdd*";
+    device = "/mnt/hdd0:/mnt/hdd1:/mnt/hdd2";
     options = ["cache.files=partial" "dropcacheonclose=true" "category.create=mfs" "func.getattr=newest"];
   };
 
