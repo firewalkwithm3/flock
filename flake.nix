@@ -6,6 +6,11 @@
     nixpkgs-pr-fluffychat.url = "github:NixOS/nixpkgs?ref=pull/419632/head"; # FluffyChat 2.0.0
     nixpkgs-pr-feishin.url = "github:NixOS/nixpkgs?ref=pull/414929/head"; # Feishin 0.17.0
 
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.3-1.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     deploy-rs.url = "github:serokell/deploy-rs"; # Remote deployment
     lanzaboote.url = "github:nix-community/lanzaboote"; # Secure boot.
     nixos-hardware.url = "github:NixOS/nixos-hardware"; # Hardware specific config.
