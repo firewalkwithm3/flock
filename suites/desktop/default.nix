@@ -98,6 +98,7 @@ with lib; {
     adwsteamgtk
     caligula
     celluloid
+    deploy-rs
     discord
     feishin
     fluffychat
