@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   lib,
   hostname,
@@ -217,8 +218,14 @@ with lib; {
           servers = {
             nixd = {
               enable = true;
-              settings.formatting.command = ["${pkgs.alejandra}/bin/alejandra"];
-              settings.options.nixos.expr = "(builtins.getFlake (builtins.toString /home/fern/Repositories/flock)).nixosConfigurations.muskduck.options";
+              settings = {
+                nixpkgs.expr = "import (builtins.getFlake (builtins.toString ${inputs.self})).inputs.nixpkgs { }";
+                formatting.command = ["${pkgs.alejandra}/bin/alejandra"];
+                options = {
+                  nixos.expr = "(builtins.getFlake (builtins.toString ${inputs.self})).nixosConfigurations.${hostname}.options";
+                  home-manager.expr = "(builtins.getFlake (builtins.toString ${inputs.self})).nixosConfigurations.${hostname}.options.home-manager.users.type.getSubOptions []";
+                };
+              };
             };
             docker_compose_language_service.enable = true;
           };
