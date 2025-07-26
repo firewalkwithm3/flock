@@ -6,11 +6,6 @@
     nixpkgs-pr-fluffychat.url = "github:NixOS/nixpkgs?ref=pull/419632/head"; # FluffyChat 2.0.0
     nixpkgs-pr-feishin.url = "github:NixOS/nixpkgs?ref=pull/414929/head"; # Feishin 0.17.0
 
-    lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.3-1.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     deploy-rs.url = "github:serokell/deploy-rs"; # Remote deployment
     lanzaboote.url = "github:nix-community/lanzaboote"; # Secure boot.
     nixos-hardware.url = "github:NixOS/nixos-hardware"; # Hardware specific config.
@@ -31,12 +26,7 @@
     };
   };
 
-  outputs = {
-    lanzaboote,
-    nixos-hardware,
-    sops-nix,
-    ...
-  } @ inputs: let
+  outputs = {nixos-hardware, ...} @ inputs: let
     # Import helpers & make functions available.
     helpers = import ./helpers.nix inputs;
     inherit (helpers) mergeHosts mkHost;
@@ -46,7 +36,6 @@
       (mkHost "muskduck" {
         suite = "desktop";
         hostModules = [
-          lanzaboote.nixosModules.lanzaboote
           nixos-hardware.nixosModules.lenovo-thinkpad-t480
         ];
       })
@@ -55,7 +44,6 @@
       (mkHost "pardalote" {
         suite = "desktop";
         hostModules = [
-          lanzaboote.nixosModules.lanzaboote
           nixos-hardware.nixosModules.lenovo-thinkpad-x220
         ];
       })
@@ -95,9 +83,6 @@
       # Container running Mozilla's syncstorage-rs
       (mkHost "firefox-syncserver" {
         suite = "server/lxc";
-        hostModules = [
-          sops-nix.nixosModules.sops
-        ];
       })
     ];
 }

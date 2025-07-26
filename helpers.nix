@@ -74,10 +74,9 @@ with inputs.nixpkgs.lib; {
 
         modules =
           [
-            {nix.nixPath = ["nixpkgs=${nixpkgs}"];} # Set $NIX_PATH.
-
             nixvim.nixosModules.nixvim # Neovim.
-            lix-module.nixosModules.default # lix.
+            lanzaboote.nixosModules.lanzaboote # Secure boot.
+            sops-nix.nixosModules.sops # Secrets management.
 
             ./suites/${suite} # Collection of configuration options for different types of systems.
             ./hosts/${hostname} # Host-specific config.
@@ -103,10 +102,6 @@ with inputs.nixpkgs.lib; {
           user = "root";
           sshuser = "fern";
           path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostname};
-          remoteBuild =
-            if (system != "x86_64-linux")
-            then true
-            else false;
         };
       };
     };

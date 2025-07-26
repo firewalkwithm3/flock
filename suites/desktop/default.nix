@@ -28,9 +28,6 @@ with lib; {
     binfmt.emulatedSystems = ["aarch64-linux"];
   };
 
-  # Enable firmware updates.
-  services.fwupd.enable = true;
-
   # Enable zram swap.
   zramSwap.enable = true;
 
@@ -81,9 +78,6 @@ with lib; {
       yelp # Help viewer.
     ]
   );
-
-  # Remove NixOS HTML manual
-  documentation.doc.enable = false;
 
   # Run electron apps under wayland.
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -136,7 +130,7 @@ with lib; {
   # Enable CUPS to print documents.
   services.printing = {
     enable = true;
-    drivers = [pkgs.brlaser pkgs.cups-dymo];
+    drivers = [pkgs.brlaser pkgs.cups-dymo]; # Brother laser printer & Dymo label printer.
   };
 
   # https://github.com/tailscale/tailscale/issues/4432#issuecomment-1112819111

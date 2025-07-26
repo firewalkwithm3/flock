@@ -1,9 +1,4 @@
-{
-  modulesPath,
-  lib,
-  ...
-}:
-with lib; {
+{modulesPath, ...}: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ../. # Server config.

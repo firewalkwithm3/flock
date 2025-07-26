@@ -15,8 +15,14 @@ with lib; {
     "flakes"
   ];
 
+  # Set $NIX_PATH.
+  nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
+
   # Enable redistributable firmware.
   hardware.enableRedistributableFirmware = true;
+
+  # Enable firmware updates.
+  services.fwupd.enable = true;
 
   # Set time zone.
   time.timeZone = "Australia/Perth";
@@ -62,10 +68,10 @@ with lib; {
   # Use fish shell
   programs.fish = {
     enable = true;
-    shellAbbrs = {
-      nrs = "nixos-rebuild switch --use-remote-sudo --flake /home/fern/Repositories/flock/";
-      nrt = "nixos-rebuild test --use-remote-sudo --flake /home/fern/Repositories/flock/";
-      nrb = "nixos-rebuild boot --use-remote-sudo --flake /home/fern/Repositories/flock/";
+    shellAbbrs = let flake = "/home/fern/Repositories/flock"; in {
+      ns = "nh os switch --flake ${flake}";
+      nt = "nh os test--flake ${flake}";
+      nb = "nh os boot --flake ${flake}";
     };
     interactiveShellInit = ''
       # set gruvbox theme
