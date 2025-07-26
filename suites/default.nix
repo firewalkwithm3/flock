@@ -68,10 +68,12 @@ with lib; {
   # Use fish shell
   programs.fish = {
     enable = true;
-    shellAbbrs = let flake = "/home/fern/Repositories/flock"; in {
-      ns = "nh os switch --flake ${flake}";
-      nt = "nh os test--flake ${flake}";
-      nb = "nh os boot --flake ${flake}";
+    shellAbbrs = let
+      flake = "/home/fern/Repositories/flock";
+    in {
+      ns = "nh os switch ${flake}";
+      nt = "nh os test ${flake}";
+      nb = "nh os boot ${flake}";
     };
     interactiveShellInit = ''
       # set gruvbox theme
