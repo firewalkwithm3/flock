@@ -111,6 +111,7 @@ with lib; {
     signal-desktop
     smile
     yubioath-flutter
+    via
   ];
 
   fonts.packages = with pkgs; [
@@ -123,6 +124,10 @@ with lib; {
     enable = true;
     settings.default = ["ghostty.desktop"];
   };
+
+  # Enable configuration of keyboard.
+  hardware.keyboard.qmk.enable = true;
+  services.udev.packages = [pkgs.via];
 
   # Enable gamemode service.
   programs.gamemode.enable = true;
