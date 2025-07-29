@@ -82,6 +82,12 @@ with lib; {
   # Run electron apps under wayland.
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
+  # Virtualisation.
+  programs.virt-manager.enable = true;
+  users.groups.libvirtd.members = ["fern"];
+  virtualisation.libvirtd.enable = true;
+  virtualisation.spiceUSBRedirection.enable = true;
+
   # Install some packages.
   programs = {
     steam.enable = true;
@@ -96,6 +102,7 @@ with lib; {
     discord
     feishin
     fluffychat
+    fusee-nano
     ghostty
     gimp3
     glabels-qt
@@ -105,13 +112,15 @@ with lib; {
     gnomeExtensions.smile-complementary-extension
     jellyfin-media-player
     libreoffice
+    nextcloud-client
+    ns-usbloader
     obsidian
     prismlauncher
     protonmail-desktop
     signal-desktop
     smile
-    yubioath-flutter
     via
+    yubioath-flutter
   ];
 
   fonts.packages = with pkgs; [
@@ -128,6 +137,12 @@ with lib; {
   # Enable configuration of keyboard.
   hardware.keyboard.qmk.enable = true;
   services.udev.packages = [pkgs.via];
+
+  # Nintendo Switch udev rules.
+  services.udev.extraRules = ''
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="057e", ATTRS{idProduct}=="3000", MODE="0666"
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="0955", ATTRS{idProduct}=="7321", MODE="0666"
+  '';
 
   # Enable gamemode service.
   programs.gamemode.enable = true;
@@ -167,13 +182,20 @@ with lib; {
       };
     };
 
-    # Gnome settings.
+    # dconf settings.
     dconf.settings = let
       wallpaper = pkgs.fetchurl {
         url = "https://git.fern.garden/fern/flock/raw/branch/main/suites/desktop/wallpaper.jpg";
         hash = "sha256-NOEJy8Tlag7pySdQnwxARJHFTzLpfwrwfksnH0/y8Mc=";
       };
     in {
+      # virt-manager.
+      "org/virt-manager/virt-manager/connections" = {
+        autoconnect = ["qemu:///system"];
+        uris = ["qemu:///system"];
+      };
+
+      # Gnome.
       "org/gnome/desktop/interface".accent-color = "green"; # Main colour used throughout interface.
       "org/gnome/desktop/interface".clock-show-seconds = true; # Show seconds on menubar clock.
       "org/gnome/desktop/interface".clock-show-weekday = true; # Show weekday on menubar clock.
