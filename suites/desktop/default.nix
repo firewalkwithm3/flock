@@ -96,6 +96,7 @@ with lib; {
 
   environment.systemPackages = with pkgs; [
     adwsteamgtk
+    adw-gtk3
     caligula
     celluloid
     deploy-rs
