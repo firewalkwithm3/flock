@@ -38,4 +38,30 @@ with lib; {
       "dmask=0077"
     ];
   };
+
+  # Share Music dir.
+  services.samba = {
+    enable = true;
+    securityType = "user";
+    openFirewall = true;
+    settings = {
+      global = {
+        "workgroup" = "FLOCK";
+        "server string" = "muskduck";
+        "netbios name" = "muskduck";
+        "security" = "user";
+      };
+      "Music" = {
+        "path" = "/home/fern/Music";
+        "browseable" = "yes";
+        "read only" = "yes";
+        "guest ok" = "no";
+      };
+    };
+  };
+
+  services.samba-wsdd = {
+    enable = true;
+    openFirewall = true;
+  };
 }
