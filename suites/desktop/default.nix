@@ -85,8 +85,20 @@ with lib; {
   # Virtualisation.
   programs.virt-manager.enable = true;
   users.groups.libvirtd.members = ["fern"];
-  virtualisation.libvirtd.enable = true;
-  virtualisation.spiceUSBRedirection.enable = true;
+  virtualisation = {
+    spiceUSBRedirection.enable = true;
+    libvirtd = {
+      enable = true;
+      qemu = {
+        package = pkgs.qemu_kvm;
+        swtpm.enable = true;
+        ovmf = {
+          enable = true;
+          packages = [pkgs.OVMFFull.fd];
+        };
+      };
+    };
+  };
 
   # Install some packages.
   programs = {
@@ -95,8 +107,8 @@ with lib; {
   };
 
   environment.systemPackages = with pkgs; [
-    adwsteamgtk
     adw-gtk3
+    adwsteamgtk
     caligula
     celluloid
     deploy-rs
@@ -108,7 +120,9 @@ with lib; {
     gimp3
     glabels-qt
     gnome-tweaks
+    gnomeExtensions.adw-gtk3-colorizer
     gnomeExtensions.auto-move-windows
+    gnomeExtensions.color-picker
     gnomeExtensions.rounded-window-corners-reborn
     gnomeExtensions.smile-complementary-extension
     jellyfin-media-player
@@ -118,6 +132,7 @@ with lib; {
     obsidian
     prismlauncher
     protonmail-desktop
+    rockbox-utility
     signal-desktop
     smile
     via
@@ -183,63 +198,12 @@ with lib; {
       };
     };
 
-    # dconf settings.
-    dconf.settings = let
-      wallpaper = pkgs.fetchurl {
-        url = "https://git.fern.garden/fern/flock/raw/branch/main/suites/desktop/wallpaper.jpg";
-        hash = "sha256-NOEJy8Tlag7pySdQnwxARJHFTzLpfwrwfksnH0/y8Mc=";
-      };
-    in {
-      # virt-manager.
+    # virt-manager - autoconnect to qemu.
+    dconf.settings = {
       "org/virt-manager/virt-manager/connections" = {
         autoconnect = ["qemu:///system"];
         uris = ["qemu:///system"];
       };
-
-      # Gnome.
-      "org/gnome/desktop/interface".accent-color = "green"; # Main colour used throughout interface.
-      "org/gnome/desktop/interface".clock-show-seconds = true; # Show seconds on menubar clock.
-      "org/gnome/desktop/interface".clock-show-weekday = true; # Show weekday on menubar clock.
-      "org/gnome/desktop/interface".color-scheme = "prefer-dark"; # Dark mode.
-      "org/gnome/desktop/interface".enable-hot-corners = false; # Disable hot corner activation.
-      "org/gnome/desktop/interface".show-battery-percentage = true; # Display battery percentage in menubar.
-      "org/gnome/desktop/peripherals/touchpad".natural-scroll = false; # Disable natural scrolling on trackpad.
-      "org/gnome/desktop/session".idle-delay = 300; # Switch off display after 5 minutes of activity.
-      "org/gnome/desktop/wm/preferences".num-workspaces = 5; # Make 5 workspaces available.
-      "org/gnome/mutter".dynamic-workspaces = false; # Specify number of workspaces (see previous).
-      "org/gnome/settings-daemon/plugins/color".night-light-enabled = true; # Enable night light.
-      "org/gnome/settings-daemon/plugins/power".sleep-inactive-ac-type = "nothing"; # Don't automatically suspend when charging.
-      "org/gnome/settings-daemon/plugins/power".sleep-inactive-battery-timeout = 1800; # Automatically suspend after 30 minutes on battery.
-
-      # Keybinds
-      "org/gnome/desktop/wm/keybindings".move-to-workspace-1 = ["<Shift><Super>1"]; # Move window to workspace 1.
-      "org/gnome/desktop/wm/keybindings".move-to-workspace-2 = ["<Shift><Super>2"]; # Move window to workspace 2.
-      "org/gnome/desktop/wm/keybindings".move-to-workspace-3 = ["<Shift><Super>3"]; # Move window to workspace 3.
-      "org/gnome/desktop/wm/keybindings".move-to-workspace-4 = ["<Shift><Super>4"]; # Move window to workspace 4.
-      "org/gnome/desktop/wm/keybindings".switch-to-workspace-1 = ["<Super>1"]; # Switch to workspace 1.
-      "org/gnome/desktop/wm/keybindings".switch-to-workspace-2 = ["<Super>2"]; # Switch to workspace 2.
-      "org/gnome/desktop/wm/keybindings".switch-to-workspace-3 = ["<Super>3"]; # Switch to workspace 3.
-      "org/gnome/desktop/wm/keybindings".switch-to-workspace-4 = ["<Super>4"]; # Switch to workspace 4.
-
-      "org/gnome/settings-daemon/plugins/media-keys".custom-keybindings = [
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
-      ];
-
-      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-        binding = "<Super>period";
-        command = "smile";
-        name = "Open Emoji Picker";
-      };
-
-      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
-        binding = "<Super>Return";
-        command = "ghostty";
-        name = "Open Terminal";
-      };
-
-      "org/gnome/desktop/background".picture-uri = "file://${wallpaper}";
-      "org/gnome/desktop/background".picture-uri-dark = "file://${wallpaper}";
     };
   };
 }
