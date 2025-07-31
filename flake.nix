@@ -3,18 +3,21 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05"; # Stable nixpkgs.
-    nixpkgs-pr-fluffychat.url = "github:NixOS/nixpkgs?ref=pull/419632/head"; # FluffyChat 2.0.0
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable"; # Unstable nixpkgs.
     nixpkgs-pr-feishin.url = "github:NixOS/nixpkgs?ref=pull/414929/head"; # Feishin 0.17.0
 
-    deploy-rs.url = "github:serokell/deploy-rs"; # Remote deployment
-    lanzaboote.url = "github:nix-community/lanzaboote"; # Secure boot.
+    deploy-rs.url = "github:serokell/deploy-rs"; # Remote deployment.
     nixos-hardware.url = "github:NixOS/nixos-hardware"; # Hardware specific config.
-    sops-nix.url = "github:Mic92/sops-nix"; # Secrets management.
-    nixvim.url = "github:nix-community/nixvim"; # Neovim.
 
-    # Home manager.
-    home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+    # Secure boot.
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Secrets management.
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -22,6 +25,18 @@
     secrets = {
       url = "git+ssh://git@docker.local:222/fern/secrets?ref=main";
       flake = false;
+    };
+
+    # Home manager.
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Neovim.
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
