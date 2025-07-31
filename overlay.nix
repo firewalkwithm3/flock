@@ -14,9 +14,12 @@ with inputs;
     # Dymo label printer drivers.
     cups-dymo = prev.pkgs.callPackage ./packages/cups-dymo {};
 
+    # Latest protonmail-desktop
+    protonmail-desktop = (import nixpkgs-unstable {inherit system;}).protonmail-desktop;
+
     # Latest FluffyChat.
     fluffychat =
-      (import nixpkgs-pr-fluffychat
+      (import nixpkgs-unstable
         {
           inherit system;
           overlays = [
