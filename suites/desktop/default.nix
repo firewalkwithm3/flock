@@ -122,6 +122,7 @@ with lib; {
     gnome-tweaks
     gnomeExtensions.adw-gtk3-colorizer
     gnomeExtensions.auto-move-windows
+    gnomeExtensions.caffeine
     gnomeExtensions.color-picker
     gnomeExtensions.rounded-window-corners-reborn
     gnomeExtensions.smile-complementary-extension
