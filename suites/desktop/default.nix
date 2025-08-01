@@ -8,6 +8,9 @@ with lib; {
 
   # Configure the bootloader.
   boot = {
+    # Use linux-zen kernel.
+    kernelPackages = pkgs.linuxKernel.packages.linux_zen;
+
     # Enable systemd-boot
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
