@@ -259,6 +259,11 @@ with lib; {
     };
   };
 
+  programs.tmux = {
+    enable = true;
+    plugins = [pkgs.tmuxPlugins.gruvbox];
+  };
+
   environment.systemPackages = with pkgs; [
     aria2
     btop
@@ -267,7 +272,6 @@ with lib; {
     ncdu
     nh
     rsync
-    tmux
     trash-cli
   ];
 
