@@ -115,7 +115,6 @@ with lib; {
     caligula
     celluloid
     deploy-rs
-    discord
     feishin
     fluffychat
     fusee-nano
@@ -124,6 +123,7 @@ with lib; {
     glabels-qt
     gnome-tweaks
     gnomeExtensions.adw-gtk3-colorizer
+    gnomeExtensions.alphabetical-app-grid
     gnomeExtensions.auto-move-windows
     gnomeExtensions.caffeine
     gnomeExtensions.color-picker
@@ -131,6 +131,7 @@ with lib; {
     gnomeExtensions.smile-complementary-extension
     jellyfin-media-player
     libreoffice
+    minipro
     nextcloud-client
     ns-usbloader
     obsidian
@@ -140,6 +141,7 @@ with lib; {
     signal-desktop
     smile
     via
+    webcord
     yubioath-flutter
   ];
 
@@ -190,24 +192,4 @@ with lib; {
   services.power-profiles-daemon.enable = mkForce false; # enabled by gnome
   services.tlp.enable = mkForce false; # enabled by nixos-hardware
   services.auto-cpufreq.enable = true;
-
-  # Home manager settings.
-  home-manager.users.fern = {
-    # Ghostty settings.
-    programs.ghostty = {
-      enable = true;
-      settings = {
-        font-family = "IosevkaCustom";
-        theme = "GruvboxDarkHard";
-      };
-    };
-
-    # virt-manager - autoconnect to qemu.
-    dconf.settings = {
-      "org/virt-manager/virt-manager/connections" = {
-        autoconnect = ["qemu:///system"];
-        uris = ["qemu:///system"];
-      };
-    };
-  };
 }

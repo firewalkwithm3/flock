@@ -50,6 +50,7 @@ with lib; {
 
   # Enable networking.
   networking.networkmanager.enable = true;
+  users.groups.networkmanager.members = ["fern"];
 
   # Set hostname
   networking.hostName = hostname;
@@ -61,13 +62,13 @@ with lib; {
     description = "Fern Garden";
     extraGroups = [
       "wheel"
-      "networkmanager"
     ];
   };
 
   # Use fish shell
   programs.fish = {
     enable = true;
+
     shellAbbrs = let
       flake = "/home/fern/Repositories/flock";
     in {
@@ -75,11 +76,20 @@ with lib; {
       nt = "nh os test ${flake}";
       nb = "nh os boot ${flake}";
     };
-    interactiveShellInit = ''
-      # set gruvbox theme
-      theme_gruvbox dark hard
 
-      # yazi cd on quit.
+    interactiveShellInit = let
+      kanagawaTheme = builtins.readFile (pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/rebelot/kanagawa.nvim/refs/heads/master/extras/fish/kanagawa.fish";
+        hash = "sha256-2sRTcX/ktf4aiALCn4w88PiGF8K3BtUeSSIQOdDxtWo=";
+      });
+    in ''
+      # Kanagawa theme.
+      ${kanagawaTheme}
+
+      # Disable greeting
+      set fish_greeting
+
+      # Yazi cd on quit.
       function y
         set tmp (mktemp -t "yazi-cwd.XXXXXX")
         yazi $argv --cwd-file="$tmp"
@@ -144,15 +154,16 @@ with lib; {
         }
       ];
 
-      colorschemes.gruvbox = {
+      colorschemes.kanagawa = {
         enable = true;
         settings = {
-          contrast = "hard";
-          overrides.SignColumn.bg = "none";
+          background.dark = "dragon";
+          colors.theme.all.ui.bg_gutter = "none";
         };
       };
 
       opts = rec {
+        background = "dark";
         shiftwidth = 2;
         tabstop = shiftwidth;
         softtabstop = shiftwidth;
@@ -253,24 +264,28 @@ with lib; {
 
   programs.yazi = {
     enable = true;
-    flavors."gruvbox-dark.yazi" = pkgs.yazi-flavour-gruvbox-dark;
-    settings.theme = {
-      flavor.dark = "gruvbox-dark";
-    };
+    flavors."kanagawa-dragon.yazi" = pkgs.yazi-flavour-kanagawa-dragon;
+    settings.theme.flavor.dark = "kanagawa-dragon";
   };
 
   programs.tmux = {
     enable = true;
-    plugins = [pkgs.tmuxPlugins.gruvbox];
+    plugins = [pkgs.tmuxPlugins.kanagawa];
+  };
+
+  programs.nh = {
+    enable = true;
+    clean = {
+      enable = true;
+      extraArgs = "--keep 5";
+    };
   };
 
   environment.systemPackages = with pkgs; [
     aria2
     btop
-    fishPlugins.gruvbox
     lynx
     ncdu
-    nh
     rsync
     trash-cli
   ];
@@ -284,15 +299,6 @@ with lib; {
       addresses = true;
       domain = true;
       userServices = true;
-    };
-  };
-
-  # Home manager settings.
-  home-manager.users.fern = {
-    programs.git = {
-      enable = true;
-      userEmail = "mail@fern.garden";
-      userName = "Fern Garden";
     };
   };
 }
