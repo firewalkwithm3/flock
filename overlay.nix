@@ -9,13 +9,30 @@ with inputs;
     webone = prev.pkgs.callPackage ./packages/webone {};
 
     # Yazi Gruvbox theme.
-    yazi-flavour-gruvbox-dark = prev.pkgs.callPackage ./packages/yazi-flavour-gruvbox {};
+    yazi-flavour-kanagawa-dragon = prev.pkgs.callPackage ./packages/yazi-flavour-kanagawa-dragon {};
 
     # Dymo label printer drivers.
     cups-dymo = prev.pkgs.callPackage ./packages/cups-dymo {};
 
     # Latest protonmail-desktop
-    protonmail-desktop = (import nixpkgs-unstable {inherit system;}).protonmail-desktop;
+    protonmail-desktop =
+      (import nixpkgs-unstable {
+        inherit system;
+
+        overlays = [
+          (final: prev: {
+            protonmail-desktop = prev.protonmail-desktop.overrideAttrs (prevAttrs: {
+              postInstall =
+                (prevAttrs.postInstall or "")
+                + ''
+                  sed -i \
+                    's|^Exec=proton-mail %U$|Exec=env XDG_SESSION_TYPE=x11 proton-mail %U|' \
+                    usr/share/applications/proton-mail.desktop
+                '';
+            });
+          })
+        ];
+      }).protonmail-desktop;
 
     # Latest FluffyChat.
     fluffychat =
@@ -65,6 +82,22 @@ with inputs;
         prev.pkgs.temurin-jre-bin
       ];
     };
+
+    tmuxPlugins =
+      prev.tmuxPlugins
+      // {
+        kanagawa = prev.tmuxPlugins.mkTmuxPlugin {
+          pluginName = "kanagawa";
+          rtpFilePath = "kanagawa.tmux";
+          version = "2025-06-01";
+          src = prev.fetchFromGitHub {
+            owner = "Nybkox";
+            repo = "tmux-kanagawa";
+            rev = "9124a8887587f784aaec94b97631255a4e70b8a0";
+            hash = "sha256-ZueH5KjPD0SaReuWJOq1FGpjEFXg216BzeXL64o74MU=";
+          };
+        };
+      };
 
     iosevka = prev.iosevka.override {
       set = "Custom";
