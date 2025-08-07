@@ -271,6 +271,11 @@ with lib; {
   programs.tmux = {
     enable = true;
     plugins = [pkgs.tmuxPlugins.kanagawa];
+    extraConfigBeforePlugins = ''
+      set -g @kanagawa-plugins " "
+      set -g @kanagawa-theme "dragon"
+      set -g @kanagawa-ignore-window-colors true
+    '';
   };
 
   programs.nh = {
