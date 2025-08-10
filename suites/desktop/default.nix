@@ -105,7 +105,7 @@ with lib; {
         };
 
         "org/gnome/shell" = {
-          favorite-apps = [];
+          favorite-apps = gvariant.mkEmptyArray;
           enabled-extensions = with pkgs; [
             gnomeExtensions.adw-gtk3-colorizer.extensionUuid
             gnomeExtensions.alphabetical-app-grid.extensionUuid
