@@ -208,14 +208,15 @@ with lib; {
           restore-state = false;
           show-indicator = "only-active";
         };
-      };
-      "org/gnome/shell/extensions/color-picker" = {
-        enable-notify = false;
-        enable-preview = true;
-        enable-shortcut = true;
-        enable-sound = false;
-        enable-systray = false;
-        persistent-mode = false;
+
+        "org/gnome/shell/extensions/color-picker" = {
+          enable-notify = false;
+          enable-preview = true;
+          enable-shortcut = true;
+          enable-sound = false;
+          enable-systray = false;
+          persistent-mode = false;
+        };
       };
     }
   ];
