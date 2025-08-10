@@ -9,14 +9,23 @@ with lib; {
   # NixOS version.
   system.stateVersion = "25.05";
 
-  # Enable flakes.
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  # nix config.
+  nix = {
+    # Set $NIX_PATH.
+    nixPath = ["nixpkgs=${inputs.nixpkgs}"];
 
-  # Set $NIX_PATH.
-  nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
+    settings = {
+      # Enable flakes.
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+
+      # Limit nix build.
+      cores = 2;
+      max-jobs = 2;
+    };
+  };
 
   # Enable redistributable firmware.
   hardware.enableRedistributableFirmware = true;
@@ -60,9 +69,7 @@ with lib; {
     isNormalUser = true;
     uid = 1000;
     description = "Fern Garden";
-    extraGroups = [
-      "wheel"
-    ];
+    extraGroups = ["wheel"];
   };
 
   # Use fish shell
