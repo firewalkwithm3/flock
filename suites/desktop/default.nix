@@ -72,6 +72,7 @@ with lib; {
   environment.gnome.excludePackages = (
     with pkgs; [
       epiphany # Browser (replaced by Firefox).
+      evince # Document viewer (replaced by papers, which will become default on Gnome 49).
       gnome-connections # Remote desktop viewer.
       gnome-console # Terminal (replaced by ghostTTY).
       gnome-maps # Maps viewer.
@@ -135,6 +136,7 @@ with lib; {
     nextcloud-client
     ns-usbloader
     obsidian
+    papers
     prismlauncher
     protonmail-desktop
     rockbox-utility
