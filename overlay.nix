@@ -83,6 +83,7 @@ with inputs;
       ];
     };
 
+    # Kanagawa Dragon theme for tmux.
     tmuxPlugins =
       prev.tmuxPlugins
       // {
@@ -99,6 +100,7 @@ with inputs;
         };
       };
 
+    # Custom iosevka build.
     iosevka = prev.iosevka.override {
       set = "Custom";
 
