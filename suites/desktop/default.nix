@@ -118,7 +118,7 @@ with lib; {
         };
 
         "org/gnome/desktop/preferences" = {
-          num-workspaces = 4;
+          num-workspaces = gvariant.mkInt32 4;
         };
 
         "org/gnome/mutter" = {
