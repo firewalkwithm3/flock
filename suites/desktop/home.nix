@@ -1,6 +1,27 @@
 {pkgs, ...}: {
   imports = [../home.nix];
 
+  # Autostart.
+  xdg.autostart = {
+    enable = true;
+    readOnly = true;
+    entries = let
+      smile = pkgs.writeText "smile.desktop" ''
+        [Desktop Entry]
+        Type=Application
+        Name=it.mijorus.smile
+        X-XDP-Autostart=it.mijorus.smile
+        Exec=smile --start-hidden
+      '';
+    in [
+      smile
+      "${pkgs.fluffychat}/share/applications/Fluffychat.desktop"
+      "${pkgs.feishin}/share/applications/feishin.desktop"
+      "${pkgs.protonmail-desktop}/share/applications/proton-mail.desktop"
+      "${pkgs.signal-desktop}/share/applications/signal.desktop"
+    ];
+  };
+
   # Ghostty settings.
   programs.ghostty = {
     enable = true;
