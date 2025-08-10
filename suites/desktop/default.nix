@@ -78,113 +78,117 @@ with lib; {
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   # dconf settings.
-  programs.dconf.profiles.user.databases = {
-    # virt-manager autoconnect.
-    "org/virt-manager/virt-manager/connections" = {
-      autoconnect = ["qemu:///system"];
-      uris = ["qemu:///system"];
-    };
+  programs.dconf.profiles.user.databases = [
+    {
+      settings = {
+        # virt-manager autoconnect.
+        "org/virt-manager/virt-manager/connections" = {
+          autoconnect = ["qemu:///system"];
+          uris = ["qemu:///system"];
+        };
 
-    # Gnome settings.
-    "org/gnome/desktop/interface" = {
-      accent-color = "green";
-      clock-show-seconds = true;
-      clock-show-weekday = true;
-      color-scheme = "prefer-dark";
-      enable-hot-corners = false;
-      show-battery-percentage = true;
-    };
+        # Gnome settings.
+        "org/gnome/desktop/interface" = {
+          accent-color = "green";
+          clock-show-seconds = true;
+          clock-show-weekday = true;
+          color-scheme = "prefer-dark";
+          enable-hot-corners = false;
+          show-battery-percentage = true;
+        };
 
-    "org/gnome/desktop/background" = let
-      wallpaper = pkgs.copyPathToStore ./wallpaper.jpg;
-    in {
-      picture-uri = wallpaper;
-      picture-uri-dark = wallpaper;
-    };
+        "org/gnome/desktop/background" = let
+          wallpaper = pkgs.copyPathToStore ./wallpaper.jpg;
+        in {
+          picture-uri = wallpaper;
+          picture-uri-dark = wallpaper;
+        };
 
-    "org/gnome/shell" = {
-      favorite-apps = [];
-      enabled-extensions = with pkgs; [
-        gnomeExtensions.adw-gtk3-colorizer.extensionUuid
-        gnomeExtensions.alphabetical-app-grid.extensionUuid
-        gnomeExtensions.auto-move-windows.extensionUuid
-        gnomeExtensions.caffeine.extensionUuid
-        gnomeExtensions.color-picker.extensionUuid
-        gnomeExtensions.rounded-window-corners-reborn.extensionUuid
-        gnomeExtensions.smile-complementary-extension.extensionUuid
-      ];
-    };
+        "org/gnome/shell" = {
+          favorite-apps = [];
+          enabled-extensions = with pkgs; [
+            gnomeExtensions.adw-gtk3-colorizer.extensionUuid
+            gnomeExtensions.alphabetical-app-grid.extensionUuid
+            gnomeExtensions.auto-move-windows.extensionUuid
+            gnomeExtensions.caffeine.extensionUuid
+            gnomeExtensions.color-picker.extensionUuid
+            gnomeExtensions.rounded-window-corners-reborn.extensionUuid
+            gnomeExtensions.smile-complementary-extension.extensionUuid
+          ];
+        };
 
-    "org/gnome/desktop/preferences" = {
-      num-workspaces = 4;
-    };
+        "org/gnome/desktop/preferences" = {
+          num-workspaces = 4;
+        };
 
-    "org/gnome/mutter" = {
-      dynamic-workspaces = false;
-      experimental-features = [
-        "scale-monitor-framebuffer" # Enables fractional scaling (125% 150% 175%)
-        "xwayland-native-scaling" # Scales Xwayland applications to look crisp on HiDPI screens
-      ];
-    };
+        "org/gnome/mutter" = {
+          dynamic-workspaces = false;
+          experimental-features = [
+            "scale-monitor-framebuffer" # Enables fractional scaling (125% 150% 175%)
+            "xwayland-native-scaling" # Scales Xwayland applications to look crisp on HiDPI screens
+          ];
+        };
 
-    "org/gnome/settings-daemon/plugins/color" = {
-      night-light-enabled = true;
-      night-light-schedule-automatic = false;
-    };
+        "org/gnome/settings-daemon/plugins/color" = {
+          night-light-enabled = true;
+          night-light-schedule-automatic = false;
+        };
 
-    "org/gnome/desktop/peripherals/touchpad" = {
-      natural-scroll = false;
-      two-finger-scrolling-enabled = true;
-    };
+        "org/gnome/desktop/peripherals/touchpad" = {
+          natural-scroll = false;
+          two-finger-scrolling-enabled = true;
+        };
 
-    "org/gnome/desktop/wm/keybindings" = {
-      close = ["<Super>q"];
-      move-to-workspace-1 = ["<Shift><Super>1"];
-      move-to-workspace-2 = ["<Shift><Super>2"];
-      move-to-workspace-3 = ["<Shift><Super>3"];
-      move-to-workspace-4 = ["<Shift><Super>4"];
-      switch-to-workspace-1 = ["<Super>1"];
-      switch-to-workspace-2 = ["<Super>2"];
-      switch-to-workspace-3 = ["<Super>3"];
-      switch-to-workspace-4 = ["<Super>4"];
-      toggle-maximized = ["<Super>m"];
-    };
+        "org/gnome/desktop/wm/keybindings" = {
+          close = ["<Super>q"];
+          move-to-workspace-1 = ["<Shift><Super>1"];
+          move-to-workspace-2 = ["<Shift><Super>2"];
+          move-to-workspace-3 = ["<Shift><Super>3"];
+          move-to-workspace-4 = ["<Shift><Super>4"];
+          switch-to-workspace-1 = ["<Super>1"];
+          switch-to-workspace-2 = ["<Super>2"];
+          switch-to-workspace-3 = ["<Super>3"];
+          switch-to-workspace-4 = ["<Super>4"];
+          toggle-maximized = ["<Super>m"];
+        };
 
-    "org/gnome/settings-daemon/plugins/media-keys" = {
-      custom-keybindings = [
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/"
-      ];
-    };
+        "org/gnome/settings-daemon/plugins/media-keys" = {
+          custom-keybindings = [
+            "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+            "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
+            "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/"
+          ];
+        };
 
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-      name = "Open Emoji Picker";
-      command = "smile";
-      binding = "<Super>period";
-    };
+        "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+          name = "Open Emoji Picker";
+          command = "smile";
+          binding = "<Super>period";
+        };
 
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
-      name = "Open Terminal";
-      command = "ghostty";
-      binding = "<Super>Return";
-    };
+        "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
+          name = "Open Terminal";
+          command = "ghostty";
+          binding = "<Super>Return";
+        };
 
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2" = {
-      name = "Open Files";
-      command = "nautilus";
-      binding = "<Super>e";
-    };
+        "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2" = {
+          name = "Open Files";
+          command = "nautilus";
+          binding = "<Super>e";
+        };
 
-    # Extensions.
-    "org/gnome/shell/extensions/auto-move-windows" = {
-      application-list = ["Fluffychat.desktop:2" "signal.desktop:2" "proton-mail.desktop:2" "feishin.desktop:3" "org.prismlauncher.PrismLauncher.desktop:4" "steam.desktop:4" "discord.desktop:2"];
-    };
+        # Extensions.
+        "org/gnome/shell/extensions/auto-move-windows" = {
+          application-list = ["Fluffychat.desktop:2" "signal.desktop:2" "proton-mail.desktop:2" "feishin.desktop:3" "org.prismlauncher.PrismLauncher.desktop:4" "steam.desktop:4" "discord.desktop:2"];
+        };
 
-    "org/gnome/shell/extensions/alphabetical-app-grid" = {
-      folder-order-position = "start";
-    };
-  };
+        "org/gnome/shell/extensions/alphabetical-app-grid" = {
+          folder-order-position = "start";
+        };
+      };
+    }
+  ];
 
   # Virtualisation.
   programs.virt-manager.enable = true;
