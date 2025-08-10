@@ -178,6 +178,18 @@ with lib; {
           binding = "<Super>e";
         };
 
+        # Applications.
+        "io/github/Foldex/AdwSteamGtk" = {
+          color-theme-options = "Adwaita";
+          hide-whats-new-switch = false;
+          library-sidebar-options = "Show";
+          login-qr-options = "Show";
+          no-rounded-corners-switch = false;
+          prefs-beta-support = false;
+          window-controls-layout-options = "Auto";
+          window-controls-options = "Adwaita";
+        };
+
         # Extensions.
         "org/gnome/shell/extensions/auto-move-windows" = {
           application-list = ["Fluffychat.desktop:2" "signal.desktop:2" "proton-mail.desktop:2" "feishin.desktop:3" "org.prismlauncher.PrismLauncher.desktop:4" "steam.desktop:4" "discord.desktop:2"];
@@ -186,6 +198,24 @@ with lib; {
         "org/gnome/shell/extensions/alphabetical-app-grid" = {
           folder-order-position = "start";
         };
+
+        "org/gnome/shell/extensions/caffeine" = {
+          enable-fullscreen = false;
+          enable-mpris = false;
+          indicator-position = gvariant.mkInt32 0;
+          indicator-position-index = gvariant.mkInt32 0;
+          indicator-position-max = gvariant.mkInt32 4;
+          restore-state = false;
+          show-indicator = "only-active";
+        };
+      };
+      "org/gnome/shell/extensions/color-picker" = {
+        enable-notify = false;
+        enable-preview = true;
+        enable-shortcut = true;
+        enable-sound = false;
+        enable-systray = false;
+        persistent-mode = false;
       };
     }
   ];
