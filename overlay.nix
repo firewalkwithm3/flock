@@ -15,24 +15,7 @@ with inputs;
     cups-dymo = prev.pkgs.callPackage ./packages/cups-dymo {};
 
     # Latest protonmail-desktop
-    protonmail-desktop =
-      (import nixpkgs-unstable {
-        inherit system;
-
-        overlays = [
-          (final: prev: {
-            protonmail-desktop = prev.protonmail-desktop.overrideAttrs (prevAttrs: {
-              postInstall =
-                (prevAttrs.postInstall or "")
-                + ''
-                  sed -i \
-                    's|^Exec=proton-mail %U$|Exec=env XDG_SESSION_TYPE=x11 proton-mail %U|' \
-                    usr/share/applications/proton-mail.desktop
-                '';
-            });
-          })
-        ];
-      }).protonmail-desktop;
+    protonmail-desktop = (import nixpkgs-unstable {inherit system;}).protonmail-desktop;
 
     # Latest FluffyChat.
     fluffychat =
