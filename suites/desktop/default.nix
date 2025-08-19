@@ -265,6 +265,7 @@ with lib; {
     gnomeExtensions.color-picker
     gnomeExtensions.rounded-window-corners-reborn
     gnomeExtensions.smile-complementary-extension
+    inkscape
     jellyfin-media-player
     libreoffice
     minipro

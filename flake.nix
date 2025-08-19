@@ -98,5 +98,10 @@
       (mkHost "firefox-syncserver" {
         suite = "server/lxc";
       })
+
+      # Container running Nextcloud.
+      (mkHost "nextcloud" {
+        suite = "server/lxc";
+      })
     ];
 }

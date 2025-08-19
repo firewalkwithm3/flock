@@ -1,13 +1,11 @@
 keys:
-  - &admin_fern age1n9q3cspp4a6qvjv9xaf00e5d5za3d8upz4akj2fh6zt5ly3ahans3vpx5x
-  - &admin_ornithologist age1t4cmsp8ge42cftxne6vjxt255tsfe6aga4r35gev647f3yuvwvkqyetenv
-  - &server_firefox-syncserver age1hrvts2jkdclk3f9atjry7chuakt5n9qmlwfwsdlcnmc88ld3ysuqz6ejge
-  - &server_nextcloud age1fn3y3km7wuftvrc2ds78ceu2wfrya0l5up0gshhnyhrq7gyglu0s2j8mpm
+  - &muskduck age1f99k8ujf9gt9zhzyqquhuv38znwjtv2cf42s0sf3h0waa5gwxsvscd2rvw
+  - &firefox-syncserver age1hrvts2jkdclk3f9atjry7chuakt5n9qmlwfwsdlcnmc88ld3ysuqz6ejge
+  - &nextcloud age1vkup37w26905wzmjnjxryfzga7f72dzhuay45uuhqvntj3gajydsnukxv7
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
     - age:
-      - *admin_fern
-      - *admin_ornithologist
-      - *server_firefox-syncserver
-      - *server_nextcloud
+      - *muskduck
+      - *firefox-syncserver
+      - *nextcloud
