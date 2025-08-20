@@ -276,6 +276,7 @@ with lib; {
     prismlauncher
     protonmail-desktop
     rockbox-utility
+    rpi-imager
     signal-desktop
     smile
     via
