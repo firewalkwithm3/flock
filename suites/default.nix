@@ -22,8 +22,8 @@ with lib; {
       ];
 
       # Limit nix build.
-      cores = 2;
-      max-jobs = 2;
+      cores = 0;
+      max-jobs = 4;
     };
   };
 
