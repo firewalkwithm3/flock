@@ -13,19 +13,24 @@
     };
   };
 
+  # Root filesystem.
   fileSystems = {
-    # Root filesystem.
     "/" = {
       device = "/dev/disk/by-label/NIXOS_SD";
       fsType = "ext4";
       options = ["noatime"];
     };
+  };
 
-    # AFP share.
-    "/srv/iMac" = {
-      device = "/dev/disk/by-uuid/48843b25-4d8c-4638-a5f8-fb3901e1165e";
-      fsType = "ext4";
-    };
+  # Printer Sharing.
+  services.printing = {
+    enable = true;
+    drivers = [pkgs.cups-dymo]; # Dymo label printer.
+    listenAddresses = ["*:631"];
+    allowFrom = ["all"];
+    browsing = true;
+    defaultShared = true;
+    openFirewall = true;
   };
 
   # Enable WebOne HTTP proxy.
@@ -46,12 +51,21 @@
     };
   };
 
+  systemd.tmpfiles.settings = {
+    "10-netatalk" = {
+      "/srv/netatalk" = {
+        d = {
+          group = "users";
+          mode = "0755";
+          user = "fern";
+        };
+      };
+    };
+  };
+
   # Open ports for services.
   networking.firewall = {
-    allowedUDPPorts = [
-      53 # DHCP server.
-      67 # DHCP server.
-    ];
+    allowedUDPPorts = [53 67]; # DHCP server.
     allowedTCPPorts = [8080 548]; # WebOne & Netatalk.
   };
 }
