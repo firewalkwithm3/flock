@@ -314,6 +314,12 @@ with lib; {
     drivers = [pkgs.brlaser pkgs.cups-dymo]; # Brother laser printer & Dymo label printer.
   };
 
+  # Scanner drivers.
+  hardware.sane = {
+    enable = true;
+    extraBackends = [pkgs.cnijfilter2];
+  };
+
   # https://github.com/tailscale/tailscale/issues/4432#issuecomment-1112819111
   networking.firewall.checkReversePath = false;
 
