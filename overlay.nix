@@ -17,6 +17,9 @@ with inputs;
     # Latest protonmail-desktop
     protonmail-desktop = (import nixpkgs-unstable {inherit system;}).protonmail-desktop;
 
+    # Latest Rockbox Utility.
+    rockbox-utility = (import nixpkgs-unstable {inherit system;}).rockbox-utility;
+
     # Latest FluffyChat.
     fluffychat =
       (import nixpkgs-unstable
