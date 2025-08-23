@@ -69,6 +69,7 @@ with lib; {
       gnome-maps # Maps viewer.
       gnome-music # Music player.
       gnome-tour # First-boot tour.
+      simple-scan # Scanning app (replaced by naps2).
       totem # Movie player (replaced by Celluloid).
       yelp # Help viewer.
     ]
@@ -265,10 +266,13 @@ with lib; {
     gnomeExtensions.color-picker
     gnomeExtensions.rounded-window-corners-reborn
     gnomeExtensions.smile-complementary-extension
+    hunspell
+    hunspellDicts.en_AU
     inkscape
     jellyfin-media-player
     libreoffice
     minipro
+    naps2
     nextcloud-client
     ns-usbloader
     obsidian
