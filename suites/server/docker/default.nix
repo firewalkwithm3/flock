@@ -7,12 +7,16 @@
   # Enable docker.
   virtualisation.docker = {
     enable = true;
+    autoPrune.enable = true;
     liveRestore = true;
-    daemon.settings.default-address-pools = [
-      {
-        base = "172.20.0.0/12";
-        size = 24;
-      }
-    ];
+    daemon.settings = {
+      data-root = "/home/fern/docker/daemon";
+      default-address-pools = [
+        {
+          base = "172.20.0.0/12";
+          size = 24;
+        }
+      ];
+    };
   };
 }

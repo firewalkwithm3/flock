@@ -1,17 +1,19 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  rootDisk = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi2";
+  rootPart = "/dev/disk/by-uuid/0804a690-0dbe-493d-9f2c-5db091569649";
+  dockerPart = "/dev/disk/by-uuid/0eb05c79-7765-4b7e-bf22-c3a53f516db5";
+in {
+  boot.loader.grub.device = rootDisk;
+
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/5d71cc16-f1ee-4b87-87b2-00fdf98442bd";
+    device = rootPart;
     fsType = "ext4";
   };
 
-  fileSystems."/home/fern/docker/data" = {
-    device = "/dev/disk/by-uuid/0eb05c79-7765-4b7e-bf22-c3a53f516db5";
+  fileSystems."/home/fern/docker" = {
+    device = dockerPart;
     fsType = "ext4";
   };
-
-  swapDevices = [
-    {device = "/dev/disk/by-uuid/b2456f94-1a8b-4de4-bd49-a9909d7487ec";}
-  ];
 
   # Update Musicbrainz search indexes once a week.
   systemd.timers."musicbrainz-update-indexes" = {

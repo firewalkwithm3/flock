@@ -16,10 +16,7 @@
   boot.kernelModules = ["kvm-intel"];
 
   # Configure the bootloader.
-  boot.loader.grub = {
-    enable = true;
-    device = "/dev/sda";
-  };
+  boot.loader.grub.enable = true;
 
   # Enable QEMU guest agent
   services.qemuGuest.enable = true;
