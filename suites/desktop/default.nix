@@ -31,9 +31,6 @@ with lib; {
     binfmt.emulatedSystems = ["aarch64-linux"];
   };
 
-  # Enable zram swap.
-  zramSwap.enable = true;
-
   # Enable smart card support (for YubiKey).
   services.pcscd.enable = true;
 
