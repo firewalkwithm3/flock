@@ -4,70 +4,19 @@
   ...
 }:
 with inputs;
-  final: prev: {
-    # WebOne HTTP proxy.
-    webone = prev.pkgs.callPackage ./packages/webone {};
-
-    # Yazi Gruvbox theme.
-    yazi-flavour-kanagawa-dragon = prev.pkgs.callPackage ./packages/yazi-flavour-kanagawa-dragon {};
-
-    # Dymo label printer drivers.
-    cups-dymo = prev.pkgs.callPackage ./packages/cups-dymo {};
-
-    # Latest protonmail-desktop
-    protonmail-desktop = (import nixpkgs-unstable {inherit system;}).protonmail-desktop;
-
-    # Latest Rockbox Utility.
-    rockbox-utility = (import nixpkgs-unstable {inherit system;}).rockbox-utility;
-
-    # Latest FluffyChat.
-    fluffychat =
-      (import nixpkgs-unstable
-        {
-          inherit system;
-          overlays = [
-            (final: prev: {
-              fluffychat = prev.fluffychat.overrideAttrs (prevAttrs: {
-                desktopItems = [
-                  ((builtins.elemAt prevAttrs.desktopItems 0).override {startupWMClass = "fluffychat";})
-                ];
-              });
-            })
-          ];
-        }).fluffychat;
-
-    # Latest Feishin.
-    feishin =
-      (import nixpkgs-pr-feishin {
-        inherit system;
-        overlays = [
-          (final: prev: {
-            feishin = prev.feishin.overrideAttrs (prevAttrs: rec {
-              pname = "feishin";
-              version = "0.18.0";
-
-              src = prev.fetchFromGitHub {
-                owner = "jeffvli";
-                repo = "feishin";
-                rev = "v${version}";
-                hash = "sha256-4gcS7Vd7LSpEByO2Hlk6nb8V2adBPh5XwWGCu2lwOA4=";
-              };
-
-              pnpmDeps = prev.pnpm_10.fetchDeps {
-                inherit pname version src;
-                hash = "sha256-1MGxrUcfvazxAubaYAsQuulUKm05opWOIC7oaLzjr7o=";
-              };
-            });
-          })
-        ];
-      }).feishin;
-
-    # PrismLauncher with Temurin JRE;
-    prismlauncher = prev.prismlauncher.override {
-      jdks = [
-        prev.pkgs.temurin-jre-bin
-      ];
+  final: prev: let
+    pkgsConfig = {
+      inherit system;
+      config.allowUnfree = true;
     };
+
+    pkgs-unstable = import nixpkgs-unstable pkgsConfig;
+    pkgs-pr-feishin = import nixpkgs-pr-feishin pkgsConfig;
+  in {
+    # My packages.
+    webone = prev.pkgs.callPackage ./packages/webone {}; # WebOne HTTP proxy.
+    yazi-flavour-kanagawa-dragon = prev.pkgs.callPackage ./packages/yazi-flavour-kanagawa-dragon {}; # Kanagawa theme for yazi.
+    cups-dymo = prev.pkgs.callPackage ./packages/cups-dymo {}; # Dymo label printer drivers.
 
     # Kanagawa Dragon theme for tmux.
     tmuxPlugins =
@@ -85,6 +34,63 @@ with inputs;
           };
         };
       };
+
+    ## Unstable channel. ##
+
+    protonmail-desktop = pkgs-unstable.protonmail-desktop; # Protonmail desktop client.
+    rockbox-utility = pkgs-unstable.rockbox-utility; # Rockbox installer.
+
+    # Fluffychat.
+    fluffychat =
+      (pkgs-unstable
+        // {
+          overlay = [
+            (final: prev: {
+              fluffychat = prev.fluffychat.overrideAttrs (prevAttrs: {
+                desktopItems = [
+                  ((builtins.elemAt prevAttrs.desktopItems 0).override {startupWMClass = "fluffychat";})
+                ];
+              });
+            })
+          ];
+        }).fluffychat;
+
+    ## Pull requests. ##
+
+    # Feishin music player.
+    feishin =
+      (pkgs-pr-feishin
+        // {
+          overlay = [
+            (final: prev: {
+              feishin = prev.feishin.overrideAttrs (prevAttrs: rec {
+                pname = "feishin";
+                version = "0.18.0";
+
+                src = prev.fetchFromGitHub {
+                  owner = "jeffvli";
+                  repo = "feishin";
+                  rev = "v${version}";
+                  hash = "sha256-4gcS7Vd7LSpEByO2Hlk6nb8V2adBPh5XwWGCu2lwOA4=";
+                };
+
+                pnpmDeps = prev.pnpm_10.fetchDeps {
+                  inherit pname version src;
+                  hash = "sha256-1MGxrUcfvazxAubaYAsQuulUKm05opWOIC7oaLzjr7o=";
+                };
+              });
+            })
+          ];
+        }).feishin;
+
+    ## Modifications ##
+
+    # PrismLauncher with Temurin JRE;
+    prismlauncher = prev.prismlauncher.override {
+      jdks = [
+        prev.pkgs.temurin-jre-bin
+      ];
+    };
 
     # Custom iosevka build.
     iosevka = prev.iosevka.override {
