@@ -223,21 +223,6 @@
         "type": "github"
       }
     },
-    "nixos-facter": {
-      "locked": {
-        "lastModified": 1755678220,
-        "narHash": "sha256-Yvmm03o7Z7gTAOfCnIetHomaDDJVBdLBPHD9dZ5kUcc=",
-        "owner": "nix-community",
-        "repo": "nixos-facter-modules",
-        "rev": "25122ee37b0c1f22b07c9fe5f970a7487093a4c0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "nixos-facter-modules",
-        "type": "github"
-      }
-    },
     "nixos-hardware": {
       "locked": {
         "lastModified": 1755330281,
@@ -248,8 +233,9 @@
         "type": "github"
       },
       "original": {
-        "id": "nixos-hardware",
-        "type": "indirect"
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "type": "github"
       }
     },
     "nixpkgs": {
@@ -393,7 +379,6 @@
         "deploy-rs": "deploy-rs",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
-        "nixos-facter": "nixos-facter",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-pr-feishin": "nixpkgs-pr-feishin",
