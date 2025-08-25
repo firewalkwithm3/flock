@@ -1,20 +1,22 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  rootDisk = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0";
+  rootPart = "/dev/disk/by-uuid/5dc8ca3b-177a-458e-b8a8-89309168d0fc";
+  dockerPart = "/dev/disk/by-uuid/95461a94-ad91-43b9-b502-2b5d4496b84e";
+in {
+  # Boot loader.
+  boot.loader.grub.device = rootDisk;
+
   # Root filesystem.
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/cac60222-9b38-4938-8b17-5fddd67e8e26";
+    device = rootPart;
     fsType = "ext4";
   };
 
   # Docker data directory
   fileSystems."/home/fern/docker/data" = {
-    device = "/dev/disk/by-uuid/95461a94-ad91-43b9-b502-2b5d4496b84e";
+    device = dockerPart;
     fsType = "ext4";
   };
-
-  # Swap.
-  swapDevices = [
-    {device = "/dev/disk/by-uuid/55dfb275-75de-4519-8f98-3491cefed32b";}
-  ];
 
   # Media HDDs.
   fileSystems."/mnt/hdd0" = {
@@ -35,8 +37,6 @@
   # Install some packages.
   environment.systemPackages = with pkgs; [
     mergerfs
-    ansible
-    (python3.withPackages (ps: [ps.ansible ps.pip ps.requests]))
   ];
 
   # MergerFS.
