@@ -12,64 +12,38 @@ with inputs.nixpkgs.lib; {
     suite ? "",
     docker ? false,
     hostModules ? [],
-  }: let
-    # System architecture.
-    system = platform;
-
-    # Secrets directory.
-    secrets = builtins.toString inputs.secrets;
-
-    # Extra modules to import.
-    extraModules =
-      hostModules # Host-specific modules.
-      ++ optionals (docker == true) [./suites/server/docker] # Enable docker if required.
-      ++ (filesystem.listFilesRecursive ./modules); # Custom modules.
-
-    # nixpkgs config.
-    pkgs = import nixpkgs {
-      inherit system;
-
-      config = {
-        # Allow installation of proprietary software.
-        allowUnfree = true;
-        # Allow the installation of packages marked as insecure in nixpkgs.
-        permittedInsecurePackages = [
-          "dotnet-sdk-6.0.428" # For WebOne.
-          "dotnet-runtime-6.0.36" # For WebOne.
-        ];
-      };
-
-      # Import my overlay.
-      overlays = [
-        (import ./overlay.nix {inherit inputs system;})
-      ];
-    };
-
-    # deploy-rs overlay.
-    deployPkgs = import nixpkgs {
-      inherit system;
-      overlays = [
-        deploy-rs.overlays.default
-        (self: super: {
-          deploy-rs = {
-            inherit (pkgs) deploy-rs;
-            lib = super.deploy-rs.lib;
-          };
-        })
-      ];
-    };
-  in
+  }:
     {
-      nixosConfigurations.${hostname} = nixosSystem {
-        inherit system pkgs;
+      nixosConfigurations.${hostname} = nixosSystem rec {
+        # Architecture.
+        system = platform;
+
+        # nixpkgs config.
+        pkgs = import nixpkgs {
+          inherit system;
+
+          config = {
+            # Allow installation of proprietary software.
+            allowUnfree = true;
+            # Allow the installation of packages marked as insecure in nixpkgs.
+            permittedInsecurePackages = [
+              "dotnet-sdk-6.0.428" # For WebOne.
+              "dotnet-runtime-6.0.36" # For WebOne.
+            ];
+          };
+
+          # Import my overlays.
+          overlays = [
+            (import ./overlay.nix {inherit nixpkgs-unstable nixpkgs-pr-feishin;})
+          ];
+        };
 
         specialArgs = {
-          # Make some variables accesible to modules.
-          inherit
-            inputs
-            hostname
-            secrets
-            ;
+          # Pass hostname & inputs to config.
+          inherit inputs hostname;
+
+          # Secrets directory.
+          secrets = builtins.toString inputs.secrets;
         };
 
         modules =
@@ -105,11 +79,26 @@ with inputs.nixpkgs.lib; {
               };
             }
           ]
-          ++ extraModules;
+          ++ hostModules # Host-specific modules.
+          ++ optionals (docker == true) [./suites/server/docker] # Enable docker if required.
+          ++ (filesystem.listFilesRecursive ./modules); # Custom modules.
       };
     }
     // optionalAttrs (strings.hasPrefix "server" suite) {
-      deploy.nodes.${hostname} = {
+      deploy.nodes.${hostname} = let
+        deployPkgs = import nixpkgs {
+          inherit system;
+          overlays = [
+            deploy-rs.overlays.default
+            (self: super: {
+              deploy-rs = {
+                inherit (pkgs) deploy-rs;
+                lib = super.deploy-rs.lib;
+              };
+            })
+          ];
+        };
+      in {
         hostname = "${hostname}.local";
         profiles.system = {
           user = "root";
