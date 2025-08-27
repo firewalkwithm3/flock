@@ -12,99 +12,101 @@ with inputs.nixpkgs.lib; {
     suite ? "",
     docker ? false,
     hostModules ? [],
-  }:
-    {
-      nixosConfigurations.${hostname} = nixosSystem rec {
-        # Architecture.
-        system = platform;
+  }: let
+    # Secrets directory.
+    secrets = builtins.toString inputs.secrets;
 
-        # nixpkgs config.
-        pkgs = import nixpkgs {
-          inherit system;
+    # Architecture.
+    system = platform;
 
-          config = {
-            # Allow installation of proprietary software.
-            allowUnfree = true;
-            # Allow the installation of packages marked as insecure in nixpkgs.
-            permittedInsecurePackages = [
-              "dotnet-sdk-6.0.428" # For WebOne.
-              "dotnet-runtime-6.0.36" # For WebOne.
-            ];
-          };
+    # Stable nixpkgs with overlay.
+    pkgs = import nixpkgs {
+      inherit system;
 
-          # Import my overlays.
-          overlays = [
-            (import ./overlay.nix {inherit nixpkgs-unstable nixpkgs-pr-feishin;})
-          ];
-        };
-
-        specialArgs = {
-          # Pass hostname & inputs to config.
-          inherit inputs hostname;
-
-          # Secrets directory.
-          secrets = builtins.toString inputs.secrets;
-        };
-
-        modules =
-          [
-            nixvim.nixosModules.nixvim # Neovim.
-            lanzaboote.nixosModules.lanzaboote # Secure boot.
-            sops-nix.nixosModules.sops # Secrets management.
-
-            ./suites/${suite} # Collection of configuration options for different types of systems.
-            ./hosts/${hostname} # Host-specific config.
-
-            # Home manager.
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                backupFileExtension = "backup";
-                users.fern = {
-                  # Me!
-                  home.username = "fern";
-                  home.homeDirectory = "/home/fern";
-
-                  # Home manager version.
-                  home.stateVersion = "25.05";
-
-                  # Let Home Manager install and manage itself.
-                  programs.home-manager.enable = true;
-
-                  # Import config.
-                  imports = [./suites/${suite}/home.nix];
-                };
-              };
-            }
-          ]
-          ++ hostModules # Host-specific modules.
-          ++ optionals (docker == true) [./suites/server/docker] # Enable docker if required.
-          ++ (filesystem.listFilesRecursive ./modules); # Custom modules.
+      config = {
+        # Allow installation of proprietary software.
+        allowUnfree = true;
+        # Allow the installation of packages marked as insecure in nixpkgs.
+        permittedInsecurePackages = [
+          "dotnet-sdk-6.0.428" # For WebOne.
+          "dotnet-runtime-6.0.36" # For WebOne.
+        ];
       };
-    }
-    // optionalAttrs (strings.hasPrefix "server" suite) {
-      deploy.nodes.${hostname} = let
-        deployPkgs = import nixpkgs {
-          inherit system;
-          overlays = [
-            deploy-rs.overlays.default
-            (self: super: {
-              deploy-rs = {
-                inherit (pkgs) deploy-rs;
-                lib = super.deploy-rs.lib;
+
+      # Import my overlays.
+      overlays = [
+        (import ./overlay.nix {inherit nixpkgs-unstable nixpkgs-pr-feishin;})
+      ];
+    };
+
+    # deploy-rs.
+    deployPkgs = import nixpkgs {
+      inherit system;
+
+      overlays = [
+        deploy-rs.overlays.default
+        (self: super: {
+          deploy-rs = {
+            inherit (pkgs) deploy-rs;
+            lib = super.deploy-rs.lib;
+          };
+        })
+      ];
+    };
+  in {
+    nixosConfigurations.${hostname} = nixosSystem {
+      inherit system pkgs;
+
+      specialArgs = {
+        # Pass variables to config.
+        inherit inputs secrets hostname;
+      };
+
+      modules =
+        [
+          nixvim.nixosModules.nixvim # Neovim.
+          lanzaboote.nixosModules.lanzaboote # Secure boot.
+          sops-nix.nixosModules.sops # Secrets management.
+
+          ./suites/${suite} # Collection of configuration options for different types of systems.
+          ./hosts/${hostname} # Host-specific config.
+
+          # Home manager.
+          home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              backupFileExtension = "backup";
+              users.fern = {
+                # Me!
+                home.username = "fern";
+                home.homeDirectory = "/home/fern";
+
+                # Home manager version.
+                home.stateVersion = "25.05";
+
+                # Let Home Manager install and manage itself.
+                programs.home-manager.enable = true;
+
+                # Import config.
+                imports = [./suites/${suite}/home.nix];
               };
-            })
-          ];
-        };
-      in {
-        hostname = "${hostname}.local";
-        profiles.system = {
-          user = "root";
-          sshuser = "fern";
-          path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostname};
-        };
+            };
+          }
+        ]
+        ++ hostModules # Host-specific modules.
+        ++ optionals (docker == true) [./suites/server/docker] # Enable docker if required.
+        ++ (filesystem.listFilesRecursive ./modules); # Custom modules.
+    };
+
+    deploy.nodes.${hostname} = mkIf (strings.hasPrefix "server" suite) {
+      hostname = "${hostname}.local";
+      profiles.system = {
+        user = "root";
+        sshuser = "fern";
+        path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${hostname};
       };
     };
+  };
 }
