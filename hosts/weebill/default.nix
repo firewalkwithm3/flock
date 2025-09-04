@@ -26,6 +26,9 @@
     };
   };
 
+  # Swap partition.
+  swapDevices = [{device = "/dev/disk/by-label/SWAP";}];
+
   # Printer Sharing.
   services.printing = {
     enable = true;
@@ -45,16 +48,22 @@
 
   users.groups."3dprinting" = {};
 
-  services.mainsail = {
-    enable = true;
-    hostName = "weebill.local";
-  };
+  services.mainsail.enable = true;
 
   services.moonraker = {
     enable = true;
+    address = "0.0.0.0";
     user = "3dprinting";
     group = "3dprinting";
-    settings.authorization.trusted_clients = ["127.0.0.0/8"];
+    settings.authorization = {
+      cors_domains = [
+        "http://weebill.local"
+      ];
+      trusted_clients = [
+        "127.0.0.0/8"
+        "10.0.1.0/24"
+      ];
+    };
   };
 
   services.klipper = rec {
@@ -99,6 +108,6 @@
   # Open ports for services.
   networking.firewall = {
     allowedUDPPorts = [53 67]; # DHCP server.
-    allowedTCPPorts = [8080 548 80]; # WebOne, Netatalk, nginx.
+    allowedTCPPorts = [8080 548 80 7125]; # WebOne, Netatalk, nginx, moonraker.
   };
 }
