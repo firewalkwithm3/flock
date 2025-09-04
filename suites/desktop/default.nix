@@ -248,6 +248,7 @@ with lib; {
     adwsteamgtk
     caligula
     celluloid
+    cura-appimage
     deploy-rs
     feishin
     fluffychat
