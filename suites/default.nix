@@ -33,12 +33,6 @@ with lib; {
   # Enable firmware updates.
   services.fwupd.enable = true;
 
-  # Enable zram swap.
-  zramSwap = {
-    enable = true;
-    algorithm = "lz4";
-  };
-
   # Set time zone.
   time.timeZone = "Australia/Perth";
 
