@@ -13,7 +13,7 @@ in {
   };
 
   # Docker data directory
-  fileSystems."/home/fern/docker/data" = {
+  fileSystems."/home/fern/docker" = {
     device = dockerPart;
     fsType = "ext4";
   };
