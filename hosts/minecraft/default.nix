@@ -8,13 +8,16 @@ in {
 
   # Root filesystem.
   fileSystems."/" = {
-    device = rootPart;
+    device = "/dev/disk/by-label/root";
     fsType = "ext4";
   };
 
   # Docker data directory.
   fileSystems."/home/fern/docker" = {
-    device = dockerPart;
+    device = "/dev/disk/by-label/docker";
     fsType = "ext4";
   };
+
+  # Swap partition.
+  swapDevices = [{device = "/dev/disk/by-label/swap";}];
 }
