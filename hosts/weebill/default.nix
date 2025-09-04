@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   # Boot loader.
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
@@ -31,6 +35,35 @@
     browsing = true;
     defaultShared = true;
     openFirewall = true;
+  };
+
+  # 3D Printing.
+  users.users."3dprinting" = {
+    isSystemUser = true;
+    group = "3dprinting";
+  };
+
+  users.groups."3dprinting" = {};
+
+  services.mainsail = {
+    enable = true;
+    hostName = "weebill.local";
+  };
+
+  services.moonraker = {
+    enable = true;
+    user = "3dprinting";
+    group = "3dprinting";
+    settings.authorization.trusted_clients = ["127.0.0.0/8"];
+  };
+
+  services.klipper = rec {
+    enable = true;
+    user = "3dprinting";
+    group = "3dprinting";
+    configDir = "${config.services.moonraker.stateDir}/config";
+    configFile = "${configDir}/printer.cfg";
+    mutableConfig = true;
   };
 
   # Enable WebOne HTTP proxy.
@@ -66,6 +99,6 @@
   # Open ports for services.
   networking.firewall = {
     allowedUDPPorts = [53 67]; # DHCP server.
-    allowedTCPPorts = [8080 548]; # WebOne & Netatalk.
+    allowedTCPPorts = [8080 548 80]; # WebOne, Netatalk, nginx.
   };
 }
