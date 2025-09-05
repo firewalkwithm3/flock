@@ -254,7 +254,6 @@ with lib; {
     adwsteamgtk
     caligula
     celluloid
-    cura-appimage
     deploy-rs
     feishin
     fluffychat
@@ -282,6 +281,7 @@ with lib; {
     obsidian
     papers
     prismlauncher
+    prusa-slicer
     protonmail-desktop
     rockbox-utility
     rpi-imager
