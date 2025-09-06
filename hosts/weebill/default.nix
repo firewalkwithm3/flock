@@ -68,11 +68,19 @@
 
   services.klipper = rec {
     enable = true;
+
     user = "3dprinting";
     group = "3dprinting";
+
+    firmwares.mcu = {
+      enable = true;
+      configFile = ./ender3v2.cfg;
+      serial = "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0";
+    };
+
+    mutableConfig = true;
     configDir = "${config.services.moonraker.stateDir}/config";
     configFile = "${configDir}/printer.cfg";
-    mutableConfig = true;
   };
 
   # Enable WebOne HTTP proxy.
